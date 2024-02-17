@@ -7,7 +7,17 @@ export default async function Page({
   params: { id: string };
 }) {
   const beerName = await getBeerInfo(id);
-  return <div>Beer Name: {beerName}</div>;
+  return (
+    < div className="flex flex-row">
+      <div className="flex flex-column">
+        <img src="/beer.jpg" alt="A nice glass of beer"></img>
+      </div>
+      <div className="ms-5">
+        <h1 className="border-solid border-b-2 text-3xl font-serif">{beerName}</h1>
+        <p className="font-serif">Pabst Blue Ribbon, commonly abbreviated PBR, is an American lager beer sold by Pabst Brewing Company, established in Milwaukee, Wisconsin, in 1844 and currently based in San Antonio. Originally called Best Select, and then Pabst Select, the current name comes from the blue ribbons tied around the bottle’s neck between 1882 and 1916.</p>
+      </div >
+    </div>
+  );
 }
 
 async function getBeerInfo(beer_id: string): Promise<string> {
@@ -24,7 +34,6 @@ async function getBeerInfo(beer_id: string): Promise<string> {
 
   if (!data.message) {
     console.error("No beer message returned from backend!");
-    throw new Error("No beer message returned from backend!");
   }
 
   return data.message;
