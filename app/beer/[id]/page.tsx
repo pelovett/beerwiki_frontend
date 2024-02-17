@@ -8,7 +8,7 @@ export default async function Page({
 }) {
   const beerName = await getBeerInfo(id);
   return (
-    <div className="flex flex-row">
+    <div className="flex flex-row max-w-[99.75rem] self-center">
       <div className="flex flex-column">
         <img src="/beer.jpg" alt="A nice glass of beer"></img>
       </div>
