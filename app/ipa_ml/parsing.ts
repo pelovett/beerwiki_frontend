@@ -1,4 +1,4 @@
-const inBlockOpList = ["*"];
+const inBlockOpList = ["*", "`"];
 
 interface opCache {
   op: string;
@@ -9,17 +9,18 @@ type operators = {
   italic: "*";
 };
 
-interface formattedTextSection {
+export interface formattedTextSection {
   text: string;
   lookupTable: Map<string, boolean>;
 }
 
-function getLookupTable(): Map<string, boolean> {
+export function getLookupTable(): Map<string, boolean> {
   return new Map<string, boolean>(inBlockOpList.map((key) => [key, false]));
 }
 
-function parseBlock(rawText: string) {
+export function parseBlock(rawText: string) {
   let textResult: formattedTextSection[] = [];
+  textResult.push(newTextSection());
   for (let i = 0; i < rawText.length; i++) {
     const curChar = rawText.at(i) ?? "";
     if (inBlockOpList.includes(curChar)) {
@@ -28,21 +29,23 @@ function parseBlock(rawText: string) {
       textResult.push(newTextSection(curChar, prevTextSection));
     } else {
       textResult[textResult.length - 1].text =
-        textResult[textResult.length - -1].text.concat(curChar);
+        textResult[textResult.length - 1].text.concat(curChar);
     }
   }
   return textResult;
 }
 
 function newTextSection(
-  operator: string,
+  operator?: string,
   prevTextSection?: formattedTextSection,
 ) {
   let newTable = getLookupTable();
-  if (prevTextSection) {
-    newTable = prevTextSection.lookupTable;
+  if (!!operator && inBlockOpList.includes(operator)) {
+    const opBoolean = prevTextSection
+      ? !prevTextSection.lookupTable.get(operator)
+      : true;
+    newTable.set(operator, !!opBoolean);
   }
-  newTable.set(operator, !newTable.get(operator));
 
   const newTextSection: formattedTextSection = {
     text: "",
