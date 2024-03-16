@@ -31,26 +31,53 @@ describe("parser module", () => {
     const boldItalicsTrueTable = getLookupTable().set("*", true).set("`", true);
     const expectedResult: formattedTextSection[] = [
       {
-          text: "raw",
-          lookupTable: defaultTable,
+        text: "raw",
+        lookupTable: defaultTable,
       },
       {
-          text: "bold",
-          lookupTable: boldTrueTable,
+        text: "bold",
+        lookupTable: boldTrueTable,
       },
       {
-          text: "italic bold",
-          lookupTable: boldItalicsTrueTable,
+        text: "italic bold",
+        lookupTable: boldItalicsTrueTable,
       },
       {
-          text: "italic",
-          lookupTable: italicsTrueTable,
+        text: "italic",
+        lookupTable: italicsTrueTable,
       },
       {
-          text: "raw again",
-          lookupTable: defaultTable,
-      }
-    ]
+        text: "raw again",
+        lookupTable: defaultTable,
+      },
+    ];
+
+    expect(parseBlock(testText)).toStrictEqual(expectedResult);
+  });
+  test("Test single asterisks", () => {
+    const testText = "raw *fake bold ` italic` raw again";
+    const defaultTable = getLookupTable();
+    const boldTrueTable = getLookupTable().set("*", true);
+    const italicsTrueTable = getLookupTable().set("`", true);
+    const boldItalicsTrueTable = getLookupTable().set("*", true).set("`", true);
+    const expectedResult: formattedTextSection[] = [
+      {
+        text: "raw",
+        lookupTable: defaultTable,
+      },
+      {
+        text: "*fake bold",
+        lookupTable: defaultTable,
+      },
+      {
+        text: "italic",
+        lookupTable: italicsTrueTable,
+      },
+      {
+        text: " raw again",
+        lookupTable: defaultTable,
+      },
+    ];
 
     expect(parseBlock(testText)).toStrictEqual(expectedResult);
   });
