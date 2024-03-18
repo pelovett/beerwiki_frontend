@@ -2,11 +2,11 @@ const BACKEND_SERVER = process.env.BACKEND_SERVER || "http://localhost:8888";
 const REVALIDATION_TIMEOUT_SEC = 60;
 
 export default async function Page({
-  params: { id },
+  params: { name },
 }: {
-  params: { id: string };
+  params: { name: string };
 }) {
-  const beerName = await getBeerInfo(id);
+  const beerName = await getBeerInfo(name);
   return (
     <div className="flex flex-row max-w-[99.75rem] self-center">
       <div className="flex flex-column">
@@ -28,21 +28,22 @@ export default async function Page({
   );
 }
 
-async function getBeerInfo(beer_id: string): Promise<string> {
+async function getBeerInfo(beer_name: string): Promise<string> {
   let data;
   try {
-    const res = await fetch(BACKEND_SERVER + `/beer/${beer_id}`, {
+    const res = await fetch(BACKEND_SERVER + `/beer/name/${beer_name}`, {
       next: { revalidate: REVALIDATION_TIMEOUT_SEC },
     });
     data = await res.json();
   } catch (err) {
     console.error(err);
-    console.log(`Failed to fetch beer page: ${beer_id} err: ${err}`);
+    console.log(`Failed to fetch beer page: ${beer_name} err: ${err}`);
   }
 
-  if (!data?.message) {
+  if (!data?.name) {
     console.error("No beer message returned from backend!");
+    return "";
   }
 
-  return data.message;
+  return data.name;
 }
