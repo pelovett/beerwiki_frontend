@@ -68,15 +68,15 @@ describe("parser module", () => {
       formattedTextSection
     >();
     expectedResult.set(0, {
-      text: "raw",
+      text: "raw ",
       lookupTable: defaultTable,
     });
     expectedResult.set(4, {
-      text: "*fake bold",
+      text: "*fake bold ",
       lookupTable: defaultTable,
     });
     expectedResult.set(15, {
-      text: "italic",
+      text: " italic",
       lookupTable: italicsTrueTable,
     });
     expectedResult.set(23, {
