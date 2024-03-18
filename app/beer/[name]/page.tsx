@@ -40,9 +40,10 @@ async function getBeerInfo(beer_name: string): Promise<string> {
     console.log(`Failed to fetch beer page: ${beer_name} err: ${err}`);
   }
 
-  if (!data?.message) {
+  if (!data?.name) {
     console.error("No beer message returned from backend!");
+    return "";
   }
 
-  return data.message;
+  return data.name;
 }

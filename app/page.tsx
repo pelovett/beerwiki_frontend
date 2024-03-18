@@ -6,7 +6,8 @@ export default function Home() {
     <main style={{ height: "100%" }}>
       <div className="flex justify-center h-full w-full">
         <div className="block mt-[13rem]">
-          <h1 className="text-center text-[200px]">🍺</h1>
+          <h1 className="text-center text-[4.5rem]">Beer Wiki</h1>
+          <h1 className="text-center text-[10rem]">🍺</h1>
           <SearchBar />
           <p className="text-center mt-6">Drink responsibly!</p>
         </div>
