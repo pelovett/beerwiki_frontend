@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 
 import Sidebar from "../components/side_bar";
 import SearchBar from "../components/search_bar";
@@ -13,7 +13,7 @@ interface SearchResult {
   url_name: string;
 }
 
-export default function SearchPage() {
+function SearchBody() {
   const searchParams = useSearchParams();
   const query = searchParams.get("query") || "";
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
@@ -48,24 +48,32 @@ export default function SearchPage() {
   }, []);
 
   return (
+    <div className="flex flex-col w-2/5 mt-10 ml-10 self-start">
+      <div className="mb-5">
+        <SearchBar startQuery={query} />
+      </div>
+      {loading ? (
+        <p>Loading results...</p>
+      ) : (
+        <ul className="ml-3 space-y-5">
+          {searchResults?.map((result) => (
+            <div key={result.url_name}>
+              <BLink url={"/beer/" + result.url_name} text={result.name} />
+            </div>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+export default function SearchPage() {
+  return (
     <div className="flex flex-row w-full self-start">
       <Sidebar />
-      <div className="flex flex-col w-2/5 mt-10 ml-10 self-start">
-        <div className="mb-5">
-          <SearchBar startQuery={query} />
-        </div>
-        {loading ? (
-          <p>Loading results...</p>
-        ) : (
-          <ul className="ml-3 space-y-5">
-            {searchResults?.map((result) => (
-              <div key={result.url_name}>
-                <BLink url={"/beer/" + result.url_name} text={result.name} />
-              </div>
-            ))}
-          </ul>
-        )}
-      </div>
+      <Suspense>
+        <SearchBody />
+      </Suspense>
     </div>
   );
 }
