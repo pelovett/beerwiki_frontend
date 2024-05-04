@@ -1,3 +1,5 @@
+import Sidebar from "@/app/components/side_bar";
+
 const BACKEND_SERVER = process.env.BACKEND_SERVER || "http://localhost:8888";
 const REVALIDATION_TIMEOUT_SEC = 60;
 
@@ -8,11 +10,9 @@ export default async function Page({
 }) {
   const beerName = await getBeerInfo(name);
   return (
-    <div className="flex flex-row max-w-[99.75rem] self-center">
-      <div className="flex flex-column">
-        <img src="/beer.jpg" alt="A nice glass of beer"></img>
-      </div>
-      <div className="ms-5">
+    <div className="flex flex-row max-w-[99.75rem] mt-12 self-center">
+      <Sidebar />
+      <div>
         <h1 className="border-solid border-b-2 text-3xl font-serif">
           {beerName}
         </h1>

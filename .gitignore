@@ -11,4 +11,4 @@ public
 yarn-error.log
 npm-debug.log
 .yarn*
-
+.pnp*
