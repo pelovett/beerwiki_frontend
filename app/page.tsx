@@ -1,10 +1,11 @@
 import SearchBar from "./components/search_bar";
 import "./globals.css";
-import Message from "@/app/components/user_message";
+import Message from "@/app/components/verify_user";
 
 export default function Home() {
   return (
     <main style={{ height: "100%" }}>
+<<<<<<< Updated upstream
       <Message />
       <div className="flex justify-center h-full w-full">
         <div className="block mt-[13rem] w-[28rem]">
@@ -13,6 +14,18 @@ export default function Home() {
           <SearchBar />
           <p className="text-center mt-6">Drink responsibly!</p>
         </div>
+=======
+      <div
+        style={{
+          alignItems: "center",
+          display: "flex",
+          justifyContent: "center",
+          height: "100%",
+          width: "100%",
+        }}
+      >
+        <p>Drink responsibly!</p>
+>>>>>>> Stashed changes
       </div>
     </main>
   );
