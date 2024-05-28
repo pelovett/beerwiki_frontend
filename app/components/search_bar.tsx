@@ -5,16 +5,20 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ReactElement, useEffect, useRef, useState } from "react";
 
-const BACKEND_SERVER = process.env.BACKEND_SERVER || "http://localhost:8888";
+import { BACKEND_SERVER } from "../network/util";
 
-interface SearchResult {
+type SearchResult = {
   name: string;
   url_name: string;
-}
+};
 
-export default function SearchBar(): ReactElement {
+export default function SearchBar({
+  startQuery,
+}: {
+  startQuery?: string;
+}): ReactElement {
   const router = useRouter();
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(startQuery || "");
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [lastSearchTime, setLastSearchTime] = useState(Date.now());
   const [selectedIndex, setSelectedIndex] = useState(-1);
@@ -48,8 +52,6 @@ export default function SearchBar(): ReactElement {
           return response.json();
         })
         .then((data) => {
-          console.log("Results");
-          console.log(data);
           setSelectedIndex(-1);
           setSearchResults(
             data.results
@@ -90,6 +92,8 @@ export default function SearchBar(): ReactElement {
       if (selectedIndex !== -1) {
         const result = searchResults[selectedIndex];
         router.push(`/beer/${result.url_name}`);
+      } else {
+        router.push(`/search?query=${query}`);
       }
     }
   };
@@ -129,7 +133,7 @@ export default function SearchBar(): ReactElement {
 
   return (
     <>
-      <div className="relative mt-2 mb-1 rounded-md shadow-sm w-[28rem] h-[2rem]">
+      <div className="relative mt-2 mb-1 rounded-md shadow-sm w-full h-[2rem]">
         <input
           type="text"
           name="price"
@@ -144,6 +148,7 @@ export default function SearchBar(): ReactElement {
           <button
             className="flex rounded-e-md justify-center items-center bg-blue-600 py-4 w-[3rem] h-full"
             type="submit"
+            onClick={() => router.push(`/search?query=${query}`)}
           >
             <Image
               src="search.svg"
