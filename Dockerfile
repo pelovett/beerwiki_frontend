@@ -4,15 +4,12 @@ FROM node:20-alpine
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy package.json and yarn.lock to the working directory
-COPY package.json yarn.lock .yarnrc.yml ./
+# Copy the entire application to the working directory
+COPY . .
 
 # Install dependencies using yarn
 RUN corepack enable
-RUN yarn install --frozen-lockfile
-
-# Copy the entire application to the working directory
-COPY . .
+RUN yarn install
 
 # Build the Next.js application
 RUN yarn build
