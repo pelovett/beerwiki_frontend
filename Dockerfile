@@ -5,10 +5,11 @@ FROM node:20-alpine
 WORKDIR /app
 
 # Copy package.json and yarn.lock to the working directory
-COPY package.json yarn.lock ./
+COPY package.json yarn.lock .yarnrc.yml ./
 
 # Install dependencies using yarn
-RUN yarn install
+RUN corepack enable
+RUN yarn install --frozen-lockfile
 
 # Copy the entire application to the working directory
 COPY . .
