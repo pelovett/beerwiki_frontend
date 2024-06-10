@@ -5,7 +5,7 @@ import { useEffect, useState, Suspense } from "react";
 
 import Sidebar from "../components/side_bar";
 import SearchBar from "../components/search_bar";
-import { BACKEND_SERVER } from "../network/util";
+import { NEXT_PUBLIC_BACKEND_SERVER  } from "../network/util";
 import BLink from "../components/beer_link";
 
 interface SearchResult {
@@ -21,7 +21,7 @@ function SearchBody() {
 
   // Load search results
   useEffect(() => {
-    fetch(BACKEND_SERVER + `/search/beer?q=${encodeURIComponent(query.trim())}`)
+    fetch(NEXT_PUBLIC_BACKEND_SERVER  + `/search/beer?q=${encodeURIComponent(query.trim())}`)
       .then((response) => {
         if (response.status === 404) {
           setSearchResults([]);

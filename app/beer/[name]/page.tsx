@@ -1,6 +1,6 @@
 import Sidebar from "@/app/components/side_bar";
 
-const BACKEND_SERVER = process.env.BACKEND_SERVER || "http://localhost:8888";
+const NEXT_PUBLIC_BACKEND_SERVER  = process.env.NEXT_PUBLIC_BACKEND_SERVER  || "http://localhost:8888";
 const REVALIDATION_TIMEOUT_SEC = 60;
 
 export default async function Page({
@@ -31,7 +31,7 @@ export default async function Page({
 async function getBeerInfo(beer_name: string): Promise<string> {
   let data;
   try {
-    const res = await fetch(BACKEND_SERVER + `/beer/name/${beer_name}`, {
+    const res = await fetch(NEXT_PUBLIC_BACKEND_SERVER  + `/beer/name/${beer_name}`, {
       next: { revalidate: REVALIDATION_TIMEOUT_SEC },
     });
     data = await res.json();

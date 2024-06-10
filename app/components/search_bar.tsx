@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ReactElement, useEffect, useRef, useState } from "react";
 
-import { BACKEND_SERVER } from "../network/util";
+import { NEXT_PUBLIC_BACKEND_SERVER  } from "../network/util";
 
 type SearchResult = {
   name: string;
@@ -39,7 +39,7 @@ export default function SearchBar({
     ) {
       setLastSearchTime(runTime);
       fetch(
-        BACKEND_SERVER + `/search/beer?q=${encodeURIComponent(query.trim())}`
+        NEXT_PUBLIC_BACKEND_SERVER  + `/search/beer?q=${encodeURIComponent(query.trim())}`
       )
         .then((response) => {
           if (response.status === 404) {

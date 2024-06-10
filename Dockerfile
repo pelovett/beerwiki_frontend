@@ -7,6 +7,10 @@ WORKDIR /app
 # Copy the entire application to the working directory
 COPY . .
 
+ARG NEXT_PUBLIC_BACKEND_SERVER
+
+ENV NEXT_PUBLIC_BACKEND_SERVER=${NEXT_PUBLIC_BACKEND_SERVER}
+
 # Install dependencies using yarn
 RUN corepack enable
 RUN yarn install
