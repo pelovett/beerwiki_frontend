@@ -15,10 +15,10 @@ export default async function Page({
       <Sidebar />
       <div>
         <div className="flex flex-column justify-between">
-            <h1 className="border-solid border-b-2 text-3xl font-serif">
-              {beerName}
-            </h1>
-            <BLink url="/" text="test" font="font-medium" />
+          <h1 className="border-solid border-b-2 text-3xl font-serif">
+            {beerName}
+          </h1>
+          <BLink url="/" text="test" font="font-medium" />
         </div>
         <p className="font-serif">
           Pabst Blue Ribbon, commonly abbreviated PBR, is an American lager beer
