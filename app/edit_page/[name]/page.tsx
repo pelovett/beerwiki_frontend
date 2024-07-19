@@ -23,17 +23,30 @@ export default function Page({
     getDescriptionFromAPI();
   }, []);
 
+  function saveBeerDescription() {}
+
   const textJsx = formatAndRenderText(inputText);
   console.log("test");
   console.log(textJsx);
   return (
-    <div className="flex flex-row self-center w-full h-full my-6">
-      <div className="w-2/4 mx-5">
-        <IpaMlInput inputText={inputText} setInputText={setInputText} />
+    <div className="flex flex-col w-full h-full my-6">
+      <div className="flex flex-row self-center w-full h-full my-6">
+        <div className="w-2/4 mx-5">
+          <IpaMlInput inputText={inputText} setInputText={setInputText} />
+        </div>
+        <div className="max-w-[50%] w-2/4 mx-5">
+          <h1>test!</h1>
+          {textJsx}
+        </div>
       </div>
-      <div className="max-w-[50%] w-2/4 mx-5">
-        <h1>test!</h1>
-        {textJsx}
+      <div className="flex flex-row-reverse w-4/5 mx-8">
+        <button
+          type="submit"
+          className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+          onClick={saveBeerDescription}
+        >
+          Save
+        </button>
       </div>
     </div>
   );
