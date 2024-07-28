@@ -17,7 +17,10 @@ export default function Page({
   const [inputText, setInputText] = useState("");
   useEffect(() => {
     async function getDescriptionFromAPI() {
-      const beerDescription = await getBeerDescription(name, REVALIDATION_TIMEOUT_SEC);
+      const beerDescription = await getBeerDescription(
+        name,
+        REVALIDATION_TIMEOUT_SEC,
+      );
       setInputText(beerDescription);
     }
 
@@ -25,7 +28,7 @@ export default function Page({
   }, []);
 
   function saveBeerDescription() {
-      setBeerDescription(name, inputText)
+    setBeerDescription(name, inputText);
   }
 
   const textJsx = formatAndRenderText(inputText);
@@ -54,4 +57,3 @@ export default function Page({
     </div>
   );
 }
-
