@@ -1,7 +1,7 @@
 import Sidebar from "@/app/components/side_bar";
 import BLink from "../../components/beer_link";
+import { getBeerName } from "../../api_calls/beer_calls";
 
-const BACKEND_SERVER = process.env.BACKEND_SERVER || "http://localhost:8888";
 const REVALIDATION_TIMEOUT_SEC = 60;
 
 export default async function Page({
@@ -9,7 +9,7 @@ export default async function Page({
 }: {
   params: { name: string };
 }) {
-  const beerName = await getBeerInfo(name);
+  const beerName = await getBeerName(name, REVALIDATION_TIMEOUT_SEC);
   return (
     <div className="flex flex-row max-w-[99.75rem] mt-12 self-center">
       <Sidebar />
@@ -30,24 +30,4 @@ export default async function Page({
       </div>
     </div>
   );
-}
-
-async function getBeerInfo(beer_name: string): Promise<string> {
-  let data;
-  try {
-    const res = await fetch(BACKEND_SERVER + `/beer/name/${beer_name}`, {
-      next: { revalidate: REVALIDATION_TIMEOUT_SEC },
-    });
-    data = await res.json();
-  } catch (err) {
-    console.error(err);
-    console.log(`Failed to fetch beer page: ${beer_name} err: ${err}`);
-  }
-
-  if (!data?.name) {
-    console.error("No beer message returned from backend!");
-    return "";
-  }
-
-  return data.name;
 }
