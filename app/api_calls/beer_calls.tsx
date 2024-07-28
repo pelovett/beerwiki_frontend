@@ -15,8 +15,6 @@ export async function getBeerIPAML(
     console.log(`Failed to fetch beer page: ${beer_name} err: ${err}`);
   }
 
-  console.log("The payload is");
-  console.log(data);
   if (!data?.page_ipa_ml) {
     console.error("No beer description returned from backend!");
     return "";
@@ -66,7 +64,6 @@ export async function setBeerIPAML(
       }),
     });
     data = await res.json();
-    console.log(data);
   } catch (err) {
     console.error(err);
     console.log(`Failed to set beer description with err: ${err}`);

@@ -14,6 +14,7 @@ export default function Page({
   params: { name: string };
 }) {
   const [inputText, setInputText] = useState("");
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     async function getDescriptionFromAPI() {
       const beerDescription = await getBeerIPAML(
@@ -24,10 +25,11 @@ export default function Page({
     }
 
     getDescriptionFromAPI();
+    setLoading(false);
   }, []);
 
-  function saveBeerDescription() {
-    setBeerIPAML(name, inputText);
+  async function saveBeerDescription() {
+    await setBeerIPAML(name, inputText);
     window.location.href = `/beer/${name}`;
   }
 
@@ -36,7 +38,7 @@ export default function Page({
     <div className="flex flex-col w-full h-full my-6">
       <div className="flex flex-row self-center w-full h-full my-6">
         <div className="w-2/4 mx-5">
-          <IpaMlInput inputText={inputText} setInputText={setInputText} />
+          <IpaMlInput inputText={inputText} setInputText={setInputText} disabled={loading}/>
         </div>
         <div className="max-w-[50%] w-2/4 mx-5">{textJsx}</div>
       </div>
