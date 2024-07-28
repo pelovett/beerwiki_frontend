@@ -1,6 +1,6 @@
 const BACKEND_SERVER = process.env.BACKEND_SERVER || "http://localhost:8888";
 
-export async function getBeerDescription(
+export async function getBeerIPAML(
   beer_name: string,
   reval_timeout_sec: number,
 ): Promise<string> {
@@ -48,7 +48,7 @@ export async function getBeerName(
   return data.name;
 }
 
-export async function setBeerDescription(
+export async function setBeerIPAML(
   beer_url_name: string,
   new_description: string,
 ): Promise<Boolean> {

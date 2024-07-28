@@ -4,8 +4,7 @@ import { useEffect } from "react";
 import { formatAndRenderText } from "../../ipa_ml/ml_rendering";
 import { IpaMlInput } from "../ipa_ml_input";
 import { useState } from "react";
-import { getBeerDescription } from "../../api_calls/beer_calls";
-import { setBeerDescription } from "../../api_calls/beer_calls";
+import { getBeerIPAML, setBeerIPAML } from "../../api_calls/beer_calls";
 
 const REVALIDATION_TIMEOUT_SEC = 60;
 
@@ -17,7 +16,7 @@ export default function Page({
   const [inputText, setInputText] = useState("");
   useEffect(() => {
     async function getDescriptionFromAPI() {
-      const beerDescription = await getBeerDescription(
+      const beerDescription = await getBeerIPAML(
         name,
         REVALIDATION_TIMEOUT_SEC,
       );
@@ -28,7 +27,7 @@ export default function Page({
   }, []);
 
   function saveBeerDescription() {
-    setBeerDescription(name, inputText);
+    setBeerIPAML(name, inputText);
   }
 
   const textJsx = formatAndRenderText(inputText);
