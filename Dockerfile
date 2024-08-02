@@ -4,14 +4,16 @@ FROM node:20-alpine
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy package.json and yarn.lock to the working directory
-COPY package.json yarn.lock ./
-
-# Install dependencies using yarn
-RUN yarn install
-
 # Copy the entire application to the working directory
 COPY . .
+
+ARG NEXT_PUBLIC_BACKEND_SERVER
+
+ENV NEXT_PUBLIC_BACKEND_SERVER=${NEXT_PUBLIC_BACKEND_SERVER}
+
+# Install dependencies using yarn
+RUN corepack enable
+RUN yarn install
 
 # Build the Next.js application
 RUN yarn build
@@ -21,4 +23,3 @@ EXPOSE 8080
 
 # Set the command to run the application
 CMD ["yarn", "start"]
-
