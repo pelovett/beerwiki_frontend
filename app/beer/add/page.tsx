@@ -15,7 +15,10 @@ export default function Page({}: {}) {
   const [beerName, setBeerName] = useState("");
 
   async function saveBeer() {
-    await newBeer(beerUrlName, beerName, ipaMlText);
+    const success = await newBeer(beerUrlName, beerName, ipaMlText);
+    if(success){
+        window.location.href = `/beer/${beerUrlName}`;
+    }
   }
 
   return (
