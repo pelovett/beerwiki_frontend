@@ -1,8 +1,9 @@
-const BACKEND_SERVER = process.env.BACKEND_SERVER || "http://localhost:8888";
+const BACKEND_SERVER =
+  process.env.NEXT_PUBLIC_BACKEND_SERVER || "http://localhost:8888";
 
 export async function getBeerIPAML(
   beer_name: string,
-  reval_timeout_sec: number,
+  reval_timeout_sec: number
 ): Promise<string> {
   let data;
   try {
@@ -25,7 +26,7 @@ export async function getBeerIPAML(
 
 export async function getBeerName(
   beer_url_name: string,
-  reval_timeout_sec: number,
+  reval_timeout_sec: number
 ): Promise<string> {
   let data;
   try {
@@ -77,7 +78,7 @@ export async function newBeer(
 
 export async function setBeerIPAML(
   beer_url_name: string,
-  new_description: string,
+  new_description: string
 ): Promise<Boolean> {
   let data;
   try {
