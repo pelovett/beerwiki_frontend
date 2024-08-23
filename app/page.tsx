@@ -1,5 +1,6 @@
 import SearchBar from "./components/search_bar";
 import "./globals.css";
+import BLink from "./components/beer_link"
 
 export default function Home() {
   return (
@@ -10,6 +11,9 @@ export default function Home() {
           <p className="text-center text-[10rem]">🍺</p>
           <SearchBar />
           <p className="text-center mt-6">Drink responsibly!</p>
+          <div className="text-center mt-6">
+            <BLink url="/beer/add" text="Add Beer" font="font-medium" />
+          </div>
         </div>
       </div>
     </main>
