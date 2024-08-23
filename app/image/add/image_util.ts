@@ -5,11 +5,9 @@ import { NEXT_PUBLIC_BACKEND_SERVER } from "@/app/network/util";
 export const uploadImage = async (
   image: File,
   imageName: string,
-  setLoadStatus: Dispatch<SetStateAction<boolean>>,
-  setError: Dispatch<SetStateAction<string>>
-): Promise<void> => {
+  setLoadStatus: Dispatch<SetStateAction<boolean>>
+): Promise<string> => {
   // Get URL for uploading from backend
-  setError("");
   setLoadStatus(true);
   let urlInfo;
   try {
@@ -20,7 +18,18 @@ export const uploadImage = async (
         encodeURIComponent(imageName.toLowerCase())
     );
     urlInfo = await result.json();
+    if (result.status === 401) {
+      setLoadStatus(false);
+      return "Not logged in";
+    } else if (result.status === 400) {
+      setLoadStatus(false);
+      return urlInfo;
+    } else if (result.status !== 201) {
+      setLoadStatus(false);
+      return "Failed to upload image, please try again";
+    }
   } catch (err: unknown) {
+    console.log(urlInfo);
     let errorString;
     if (typeof err === "string") {
       errorString = err;
@@ -32,15 +41,13 @@ export const uploadImage = async (
 
     console.error("Failed to retrieve upload url: ", errorString);
     setLoadStatus(false);
-    setError(errorString);
-    return;
+    return errorString;
   }
 
   if (!urlInfo?.url || !urlInfo?.id) {
     console.error("Server response didn't include url", urlInfo);
     setLoadStatus(false);
-    setError(urlInfo);
-    return;
+    return "Server response didn't include url or id";
   }
 
   // Upload blob to URL
@@ -67,8 +74,7 @@ export const uploadImage = async (
 
     console.error("Failed to upload image:", errorString);
     setLoadStatus(false);
-    setError(errorString);
-    return;
+    return errorString;
   }
 
   // Report upload to beer wiki backend
@@ -95,10 +101,9 @@ export const uploadImage = async (
 
     console.error("Failed to report upload result to backend", errorString);
     setLoadStatus(false);
-    setError(errorString);
-    return;
+    return errorString;
   }
 
   setLoadStatus(false);
-  return;
+  return "";
 };

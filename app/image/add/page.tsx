@@ -114,15 +114,18 @@ const formStep = (
                 "hover:bg-blue-600 disabled:bg-gray-600"
               }
               onClick={() => {
-                uploadImage(
-                  selectedImage,
-                  imageNameField,
-                  setIsUploading,
-                  setErrorMessage
+                setErrorMessage("");
+                uploadImage(selectedImage, imageNameField, setIsUploading).then(
+                  (result) => {
+                    if (result === "") {
+                      setStep(2);
+                    } else if (result === "Not logged in") {
+                      window.location.href = "/user/login";
+                    } else {
+                      setErrorMessage(result);
+                    }
+                  }
                 );
-                if (errorMessage === "") {
-                  setStep(2);
-                }
               }}
               disabled={isUploading || !imageNameField}
             >
