@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ReactElement, useEffect, useRef, useState } from "react";
 
-import { NEXT_PUBLIC_BACKEND_SERVER  } from "../network/util";
+import { NEXT_PUBLIC_BACKEND_SERVER } from "../network/util";
 
 type SearchResult = {
   name: string;
@@ -39,7 +39,8 @@ export default function SearchBar({
     ) {
       setLastSearchTime(runTime);
       fetch(
-        NEXT_PUBLIC_BACKEND_SERVER  + `/search/beer?q=${encodeURIComponent(query.trim())}`
+        NEXT_PUBLIC_BACKEND_SERVER +
+          `/search/beer?q=${encodeURIComponent(query.trim())}`
       )
         .then((response) => {
           if (response.status === 404) {
@@ -151,7 +152,7 @@ export default function SearchBar({
             onClick={() => router.push(`/search?query=${query}`)}
           >
             <Image
-              src="search.svg"
+              src="/search.svg"
               alt="Submit search"
               width={25}
               height={25}

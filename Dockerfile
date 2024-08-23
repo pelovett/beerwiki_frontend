@@ -23,4 +23,3 @@ EXPOSE 8080
 
 # Set the command to run the application
 CMD ["yarn", "start"]
-
