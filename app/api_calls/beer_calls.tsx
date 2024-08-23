@@ -46,6 +46,35 @@ export async function getBeerName(
   return data.name;
 }
 
+export async function newBeer(
+  beer_url_name: string,
+  beer_name: string,
+  new_description: string
+): Promise<Boolean> {
+  let data;
+  try {
+    const res = await fetch(BACKEND_SERVER + "/beer/", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        url_name: beer_url_name,
+        name: beer_name,
+        page_ipa_ml: new_description,
+      }),
+    });
+    data = await res.json();
+  } catch (err) {
+    console.error(err);
+    console.log(`Failed to add beer with error: ${err}`);
+    return false;
+  }
+
+  return true;
+}
+
 export async function setBeerIPAML(
   beer_url_name: string,
   new_description: string,

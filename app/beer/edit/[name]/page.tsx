@@ -29,8 +29,10 @@ export default function Page({
   }, []);
 
   async function saveBeerDescription() {
-    await setBeerIPAML(name, inputText);
-    window.location.href = `/beer/${name}`;
+    const success = await setBeerIPAML(name, inputText);
+    if(success) {
+        window.location.href = `/beer/${name}`;
+    }
   }
 
   const textJsx = formatAndRenderText(inputText);
