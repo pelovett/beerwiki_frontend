@@ -4,7 +4,7 @@ export default function Sidebar() {
   return (
     <div className="flex flex-col min-w-44 mx-2">
       <div className="flex flex-col items-center">
-        <p className="text-center text-[4rem]">🍺</p>
+        <p className="text-center text-[4rem] select-none">🍺</p>
         <p className="text-center text-[2rem] mb-2">Beer Wiki</p>
         <hr className="self-center w-3/4" />
       </div>

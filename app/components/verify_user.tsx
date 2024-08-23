@@ -7,16 +7,10 @@ export default async function VerifyUser(): Promise<Boolean> {
     return false;
   }
 
-  console.log(NEXT_PUBLIC_BACKEND_SERVER);
   const response = await fetch(NEXT_PUBLIC_BACKEND_SERVER + "/user/verify", {
     method: "POST",
     headers: { "Content-Type": "application/json", Cookie: authCookie.value },
   });
 
-  console.log(response);
-  if (response.ok) {
-    return true;
-  } else {
-    return false;
-  }
+  return response.ok;
 }
