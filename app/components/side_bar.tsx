@@ -11,6 +11,8 @@ export default function Sidebar() {
       <div className="flex flex-col items-center mt-5 space-y-5">
         <BLink url="/" text="Home" font="font-medium" />
         <BLink url="/search" text="Search" font="font-medium" />
+        <BLink url="/user/login" text="Login" font="font-medium" />
+        <BLink url="/user/profile" text="Profile" font="font-medium" />
         <BLink url="/beer/add" text="Add Beer" font="font-medium" />
         <BLink url="/image/add" text="Add Image" font="font-medium" />
       </div>
