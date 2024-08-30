@@ -13,14 +13,24 @@ export default function LoginPage() {
 
     const formData = new FormData(event.currentTarget);
     const email = formData.get("email");
+    const username = formData.get("username");
     const password = formData.get("password");
+    const createdAt = new Date().toISOString(); // ISO format
 
-    const response = await fetch(NEXT_PUBLIC_BACKEND_SERVER + "/user/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-      credentials: "include", // Important for including cookies
-    });
+    const response = await fetch(
+      NEXT_PUBLIC_BACKEND_SERVER + "/user/create-account",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          username,
+          password,
+          created_at: createdAt,
+        }),
+        credentials: "include", // Important for including cookies
+      }
+    );
 
     if (response.ok) {
       console.log("good");
@@ -35,8 +45,15 @@ export default function LoginPage() {
         <Sidebar />
       </div>
       <div className="flex flex-col p-8 bg-white shadow-lg rounded-lg w-full max-w-md mx-auto">
-        <h1 className="text-3xl font-serif mb-4">Login</h1>
+        <h1 className="text-3xl font-serif mb-4">Create Account</h1>
         <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+          <input
+            type="username"
+            name="username"
+            placeholder="Username"
+            className="p-2 border border-gray-300 rounded-md"
+            required
+          />
           <input
             type="email"
             name="email"
@@ -55,14 +72,8 @@ export default function LoginPage() {
             type="submit"
             className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
           >
-            Login
+            Create Account
           </button>
-          <a
-            href="/user/create_user"
-            className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 inline-block text-center"
-          >
-            Create User
-          </a>
         </form>
       </div>
     </div>

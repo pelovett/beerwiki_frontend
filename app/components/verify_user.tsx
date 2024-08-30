@@ -9,7 +9,11 @@ export default async function VerifyUser(): Promise<Boolean> {
 
   const response = await fetch(NEXT_PUBLIC_BACKEND_SERVER + "/user/verify", {
     method: "POST",
-    headers: { "Content-Type": "application/json", Cookie: authCookie.value },
+    headers: {
+      "Content-Type": "application/json",
+      Cookie: `login_cookie=${authCookie.value}`,
+    },
+    credentials: "include",
   });
 
   return response.ok;
