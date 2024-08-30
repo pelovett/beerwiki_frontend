@@ -20,16 +20,20 @@ export default async function Page({
   const pageContent = formatAndRenderText(ipaMlContent);
   const editUrl = `/beer/edit/${name}`;
   return (
-    <div className="flex flex-row max-w-[99.75rem] mt-12">
+    <div className="flex flex-row max-w-[99.75rem] mt-12 w-full">
       <Sidebar />
-      <div>
-        <div className="flex flex-column justify-between">
-          <h1 className="border-solid border-b-2 text-3xl font-serif">
-            {beerName}
-          </h1>
+      <div className="w-full mr-2">
+        <div
+          className={
+            "flex flex-column justify-between w-full" +
+            " items-start border-solid border-b-2" +
+            " pr-4"
+          }
+        >
+          <h1 className="text-3xl font-serif">{beerName}</h1>
           <BLink url={editUrl} text="edit" font="font-medium" />
         </div>
-        <div className="font-serif">{pageContent}</div>
+        <div className="font-serif w-full">{pageContent}</div>
       </div>
     </div>
   );

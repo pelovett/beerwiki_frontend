@@ -11,9 +11,7 @@ export function textSectionToJsx(textSection: formattedTextSection) {
   }
 
   return (
-    <>
-      <span className={style}>{textSection.text.replaceAll(" ", "\u00A0")}</span>
-    </>
+    <span className={style}>{textSection.text.replaceAll(" ", "\u00A0")}</span>
   );
 }
 
