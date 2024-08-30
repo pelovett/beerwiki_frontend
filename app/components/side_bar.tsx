@@ -12,6 +12,7 @@ export default function Sidebar() {
         <BLink url="/" text="Home" font="font-medium" />
         <BLink url="/search" text="Search" font="font-medium" />
         <BLink url="/beer/add" text="Add Beer" font="font-medium" />
+        <BLink url="/image/add" text="Add Image" font="font-medium" />
       </div>
     </div>
   );
