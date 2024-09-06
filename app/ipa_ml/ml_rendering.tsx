@@ -20,7 +20,7 @@ export function formatAndRenderText(text: string) {
 
   let jsxSections: ReactElement[] = [];
 
-  formattedText.forEach((textSection, _) => {
+  formattedText.textSections.forEach((textSection) => {
     jsxSections.push(textSectionToJsx(textSection));
   });
 

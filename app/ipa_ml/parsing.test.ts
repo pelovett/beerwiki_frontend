@@ -1,5 +1,11 @@
 import { describe, expect, test } from "@jest/globals";
-import { formattedTextSection, getLookupTable, parseBlock } from "./parsing";
+import {
+  formattedTextSection,
+  getLookupTable,
+  parseBlock,
+  parseInfoBox,
+  parseFirstLine,
+} from "./parsing";
 
 describe("parser module", () => {
   test("Tests bold in test text", () => {
@@ -85,5 +91,42 @@ describe("parser module", () => {
     });
 
     expect(parseBlock(testText)).toStrictEqual(expectedResult);
+  });
+  test("First line happy case", () => {
+    const testContent = `{
+tile: Beer`;
+
+    expect(parseFirstLine(testContent)).toStrictEqual(2);
+  });
+  test("Test first line has too much content", () => {
+    const testContent = `{ asdfasdf
+        title: test
+    `;
+
+    expect(() => parseFirstLine(testContent)).toThrow();
+  });
+  test("Test first line has no follow up line", () => {
+    const testContent = "{  ";
+
+    expect(() => parseFirstLine(testContent)).toThrow();
+  });
+
+  test("Empty parse info box", () => {
+    const testContent = "{  }";
+
+    expect(() => parseInfoBox(testContent)).toThrow();
+  });
+
+  test("Simple complete info box", () => {
+    const testContent = `{
+        title: beer
+        abv: 7
+      }`;
+
+    const expectedResult: Map<string, string> = new Map<string, string>();
+
+    expectedResult.set("title", "beer");
+    expectedResult.set("abv", "7");
+    expect(parseInfoBox(testContent)).toStrictEqual(expectedResult);
   });
 });

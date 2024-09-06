@@ -1,14 +1,9 @@
 const inBlockOpList = ["*", "`"];
 
-type opCache = {
-  op: string;
-  cache: string;
+export type formattedContent = {
+    info: Map<string, string>;
+    textSections: formattedTextSection[];
 };
-
-type operators = {
-  italic: "*";
-};
-
 export type formattedTextSection = {
   text: string;
   lookupTable: Map<string, boolean>;
@@ -18,7 +13,7 @@ export function getLookupTable(): Map<string, boolean> {
   return new Map<string, boolean>(inBlockOpList.map((key) => [key, false]));
 }
 
-export function parseBlock(rawText: string) {
+export function parseBlock(rawText: string): formattedContent {
   let textResult: Map<number, formattedTextSection> = new Map<
     number,
     formattedTextSection
@@ -27,6 +22,12 @@ export function parseBlock(rawText: string) {
   let opCount: Map<string, number> = new Map<string, number>();
   let prevIndex = 0;
   textResult.set(0, newTextSection());
+  let infoBox = new Map<string, string>();
+  try {
+    infoBox = parseInfoBox(rawText) 
+  } catch (error) {
+    console.log(`Got an error parsing the info box: ${error}`);
+  }
   for (let i = 0; i < rawText.length; i++) {
     const curChar = rawText.at(i) ?? "";
     if (inBlockOpList.includes(curChar)) {
@@ -46,7 +47,10 @@ export function parseBlock(rawText: string) {
     }
   }
   fixUnmatchedSections(opLastSeen, opCount, textResult);
-  return textResult;
+  return {
+    info: infoBox, 
+    textSections: Array.from(textResult.values()),
+  }
 }
 
 function fixUnmatchedSections(
@@ -107,4 +111,88 @@ function newTextSection(
   };
 
   return newTextSection;
+}
+
+export function parseInfoBox(content: string): Map<string, string> {
+  const resultMap = new Map<string, string>();
+  const allowedKeys = ["title", "abv"];
+  const state: {
+    insideInfoBox: boolean;
+    firstNewlineSeen: boolean;
+    seenSeparator: boolean;
+    seenEndChar: boolean;
+    keyStart: null | number;
+    keyEnd: null | number;
+    valStart: null | number;
+    valEnd: null | number;
+  } = {
+    insideInfoBox: false,
+    firstNewlineSeen: false,
+    seenSeparator: false,
+    seenEndChar: false,
+    keyStart: null,
+    keyEnd: null,
+    valStart: null,
+    valEnd: null,
+  };
+  if (content.length < 4) {
+    throw Error("Infobox too short");
+  }
+  const boxStart = parseFirstLine(content);
+  for (let i = boxStart; i < content.length; i++) {
+    if (content[i] === '}') {
+        break;
+    }
+    if (!state.insideInfoBox) {
+    }
+    if (content[i] === "\n") {
+      state.valEnd = i;
+      if (state.keyStart && state.keyEnd && state.valStart && state.valEnd) {
+        let key = content.substring(state.keyStart, state.keyEnd);
+        key = key.trim();
+        if (!allowedKeys.includes(key)) {
+          throw Error(`Key ${key} not included in allowed keys.`);
+        }
+        const val = content.substring(state.valStart, state.valEnd).trim();
+        resultMap.set(key, val);
+      }
+      state.keyStart = null;
+      state.keyEnd = null;
+      state.valStart = null;
+      state.valEnd = null;
+      state.seenSeparator = false;
+    }
+    if (state.keyStart === null) {
+      state.keyStart = i;
+    }
+    if (state.valStart === null && state.seenSeparator === true) {
+      state.valStart = i;
+    }
+    if (content[i] === ":" && !state.seenSeparator) {
+      state.keyEnd = i;
+      state.seenSeparator = true;
+    }
+  }
+  return resultMap;
+}
+
+export function parseFirstLine(content: string): number {
+  let seenOpenParen = false;
+  const whiteSpace = [" ", "\t", "\r"];
+
+  for (let i = 0; i < content.length; i++) {
+    if (whiteSpace.includes(content[i])) {
+      continue;
+    } else if (content[i] === "{" && !seenOpenParen) {
+      seenOpenParen = true;
+    } else if (content[i] === "\n" && seenOpenParen) {
+      if (i + 1 === content.length) {
+        throw Error("Invalid info box.");
+      }
+      return i + 1;
+    } else {
+      throw Error("Invalid info box.");
+    }
+  }
+  throw Error("Invalid info box.");
 }
