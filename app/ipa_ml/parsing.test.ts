@@ -12,23 +12,20 @@ describe("parser module", () => {
     const testText = "Testing this text with the *bold* operator in it";
     const defaultTable = getLookupTable();
     const boldTrueTable = getLookupTable().set("*", true);
-    const testResult: Map<number, formattedTextSection> = new Map<
-      number,
-      formattedTextSection
-    >();
-    testResult.set(0, {
+    const expectedResult: formattedTextSection[] = []; 
+    expectedResult.push({
       text: "Testing this text with the ",
       lookupTable: defaultTable,
     });
-    testResult.set(27, {
+    expectedResult.push({
       text: "bold",
       lookupTable: boldTrueTable,
     });
-    testResult.set(32, {
+    expectedResult.push({
       text: " operator in it",
       lookupTable: defaultTable,
     });
-    expect(parseBlock(testText)).toStrictEqual(testResult);
+    expect(parseBlock(testText).textSections).toStrictEqual(expectedResult);
   });
   test("Test nested italics and bold", () => {
     const testText = "raw *bold ` italic bold * italic ` raw again";
@@ -36,32 +33,29 @@ describe("parser module", () => {
     const boldTrueTable = getLookupTable().set("*", true);
     const italicsTrueTable = getLookupTable().set("`", true);
     const boldItalicsTrueTable = getLookupTable().set("*", true).set("`", true);
-    const expectedResult: Map<number, formattedTextSection> = new Map<
-      number,
-      formattedTextSection
-    >();
-    expectedResult.set(0, {
+    const expectedTextSections: formattedTextSection[] = []; 
+    expectedTextSections.push({
       text: "raw ",
       lookupTable: defaultTable,
     });
-    expectedResult.set(4, {
+    expectedTextSections.push({
       text: "bold ",
       lookupTable: boldTrueTable,
     });
-    expectedResult.set(10, {
+    expectedTextSections.push({
       text: " italic bold ",
       lookupTable: boldItalicsTrueTable,
     });
-    expectedResult.set(24, {
+    expectedTextSections.push({
       text: " italic ",
       lookupTable: italicsTrueTable,
     });
-    expectedResult.set(33, {
+    expectedTextSections.push({
       text: " raw again",
       lookupTable: defaultTable,
     });
 
-    expect(parseBlock(testText)).toStrictEqual(expectedResult);
+    expect(parseBlock(testText).textSections).toStrictEqual(expectedTextSections);
   });
   test("Test single asterisks", () => {
     const testText = "raw *fake bold ` italic` raw again";
@@ -69,28 +63,25 @@ describe("parser module", () => {
     const boldTrueTable = getLookupTable().set("*", true);
     const italicsTrueTable = getLookupTable().set("`", true);
     const boldItalicsTrueTable = getLookupTable().set("*", true).set("`", true);
-    const expectedResult: Map<number, formattedTextSection> = new Map<
-      number,
-      formattedTextSection
-    >();
-    expectedResult.set(0, {
+    const expectedResult: formattedTextSection[] = []; 
+    expectedResult.push({
       text: "raw ",
       lookupTable: defaultTable,
     });
-    expectedResult.set(4, {
+    expectedResult.push({
       text: "*fake bold ",
       lookupTable: defaultTable,
     });
-    expectedResult.set(15, {
+    expectedResult.push({
       text: " italic",
       lookupTable: italicsTrueTable,
     });
-    expectedResult.set(23, {
+    expectedResult.push({
       text: " raw again",
       lookupTable: defaultTable,
     });
 
-    expect(parseBlock(testText)).toStrictEqual(expectedResult);
+    expect(parseBlock(testText).textSections).toStrictEqual(expectedResult);
   });
   test("First line happy case", () => {
     const testContent = `{
