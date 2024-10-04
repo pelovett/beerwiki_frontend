@@ -23,12 +23,15 @@ export function parseBlock(rawText: string): formattedContent {
   let prevIndex = 0;
   textResult.set(0, newTextSection());
   let infoBox = new Map<string, string>();
+  let startIndex = 0;
   try {
-    infoBox = parseInfoBox(rawText) 
+    const parseResult = parseInfoBox(rawText);
+    startIndex = parseResult[0]
+    infoBox = parseResult[1] 
   } catch (error) {
     console.log(`Got an error parsing the info box: ${error}`);
   }
-  for (let i = 0; i < rawText.length; i++) {
+  for (let i = startIndex; i < rawText.length; i++) {
     const curChar = rawText.at(i) ?? "";
     if (inBlockOpList.includes(curChar)) {
       let count = opCount.get(curChar) ? Number(opCount.get(curChar)) + 1 : 1;
@@ -113,7 +116,7 @@ function newTextSection(
   return newTextSection;
 }
 
-export function parseInfoBox(content: string): Map<string, string> {
+export function parseInfoBox(content: string): [number, Map<string, string>] {
   const resultMap = new Map<string, string>();
   const allowedKeys = ["title", "abv"];
   const state: {
@@ -139,7 +142,8 @@ export function parseInfoBox(content: string): Map<string, string> {
     throw Error("Infobox too short");
   }
   const boxStart = parseFirstLine(content);
-  for (let i = boxStart; i < content.length; i++) {
+  let i = boxStart
+  for (; i < content.length; i++) {
     if (content[i] === '}') {
         break;
     }
@@ -173,7 +177,8 @@ export function parseInfoBox(content: string): Map<string, string> {
       state.seenSeparator = true;
     }
   }
-  return resultMap;
+  let index = i;
+  return [index, resultMap];
 }
 
 export function parseFirstLine(content: string): number {
