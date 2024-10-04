@@ -1,10 +1,15 @@
 const BACKEND_SERVER =
   process.env.NEXT_PUBLIC_BACKEND_SERVER || "http://localhost:8888";
 
-export async function getBeerIPAML(
+export type BeerPageContent = {
+  name: string;
+  ipaml: string;
+};
+
+export async function getBeer(
   beer_name: string,
   reval_timeout_sec: number
-): Promise<string> {
+): Promise<BeerPageContent | null> {
   let data;
   try {
     const res = await fetch(BACKEND_SERVER + `/beer/name/${beer_name}`, {
@@ -18,33 +23,14 @@ export async function getBeerIPAML(
 
   if (!data?.page_ipa_ml) {
     console.error("No beer description returned from backend!");
-    return "";
+    return null;
   }
-
-  return data.page_ipa_ml;
-}
-
-export async function getBeerName(
-  beer_url_name: string,
-  reval_timeout_sec: number
-): Promise<string> {
-  let data;
-  try {
-    const res = await fetch(BACKEND_SERVER + `/beer/name/${beer_url_name}`, {
-      next: { revalidate: reval_timeout_sec },
-    });
-    data = await res.json();
-  } catch (err) {
-    console.error(err);
-    console.log(`Failed to fetch beer page: ${beer_url_name} err: ${err}`);
-  }
-
   if (!data?.name) {
     console.error("No beer message returned from backend!");
-    return "";
+    return null;
   }
 
-  return data.name;
+  return { name: data.name, ipaml: data.page_ipa_ml };
 }
 
 export async function newBeer(
