@@ -26,8 +26,8 @@ export function parseBlock(rawText: string): formattedContent {
   let startIndex = 0;
   try {
     const parseResult = parseInfoBox(rawText);
-    startIndex = parseResult[0]
-    infoBox = parseResult[1] 
+    startIndex = parseResult[0] + 1;
+    infoBox = parseResult[1];
   } catch (error) {
     console.log(`Got an error parsing the info box: ${error}`);
   }
