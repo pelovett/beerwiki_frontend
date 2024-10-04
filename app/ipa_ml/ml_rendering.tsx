@@ -33,3 +33,7 @@ export function formatAndRenderText(text: string) {
     </p>
   );
 }
+
+function renderInfoBox(info: Map<string, string>) {
+    
+}

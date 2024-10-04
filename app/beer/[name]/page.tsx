@@ -5,7 +5,7 @@ import { formatAndRenderText } from "../../ipa_ml/ml_rendering";
 
 const NEXT_PUBLIC_BACKEND_SERVER =
   process.env.NEXT_PUBLIC_BACKEND_SERVER || "http://localhost:8888";
-const REVALIDATION_TIMEOUT_SEC = 60;
+const REVALIDATION_TIMEOUT_SEC = 0;
 
 export default async function Page({
   params: { name },
