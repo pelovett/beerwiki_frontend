@@ -26,7 +26,7 @@ export function formatAndRenderText(text: string) {
   let jsxSections: ReactElement[] = [];
 
   let i = 0;
-  formattedText.forEach((textSection, _) => {
+  formattedText.textSections.forEach((textSection, _) => {
     jsxSections.push(textSectionToJsx(textSection, i));
     i += 1;
   });
