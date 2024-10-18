@@ -3,7 +3,7 @@ export default function IPAMLEditor() {
   const bBar = EditorButtonBar();
 
   return (
-    <div className="flex-col">
+    <div className="flex flex-col">
       {bBar} 
     </div>
   );
@@ -14,7 +14,7 @@ function EditorButtonBar() {
   const boldButton = ButtonChip('B');
   const italicsButton = ButtonChip('I');
   return (
-    <div className = "flex flex-row w-full bg-blue-600 rounded e-md h-[2rem]">
+    <div className = "flex flex-row w-full border-solid border-2 border-gray-300 rounded e-md h-[2rem]">
       {boldButton}
       {italicsButton}
     </div>
@@ -22,14 +22,13 @@ function EditorButtonBar() {
 }
 
 function ButtonChip(bSymbol: string) {
-    const font = "font-small"
     return (
-        <div
+        <button
           className={
-            "flex justify-center items-center w-[2rem] h-full bg-red-600"
+            "flex justify-center items-center w-[2rem] h-full hover:bg-stone-300 border-r-2"
           }
         >
           {bSymbol}
-        </div>
+        </button>
     );
 }
