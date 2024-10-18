@@ -1,7 +1,10 @@
 import { parseBlock, formattedTextSection } from "./parsing";
 import { ReactElement } from "react";
 
-export function textSectionToJsx(textSection: formattedTextSection) {
+export function textSectionToJsx(
+  textSection: formattedTextSection,
+  key: Number
+) {
   let style = "text-pretty inline-block ";
   if (textSection.lookupTable.get("*")) {
     style += "font-bold";
@@ -11,7 +14,9 @@ export function textSectionToJsx(textSection: formattedTextSection) {
   }
 
   return (
-    <span className={style}>{textSection.text.replaceAll(" ", "\u00A0")}</span>
+    <span key={key.toString()} className={style}>
+      {textSection.text.replaceAll(" ", "\u00A0")}
+    </span>
   );
 }
 
@@ -19,9 +24,10 @@ export function formatAndRenderText(text: string) {
   const parsedML = parseBlock(text);
 
   let jsxSections: ReactElement[] = [];
-
-  parsedML.textSections.forEach((textSection) => {
-    jsxSections.push(textSectionToJsx(textSection));
+  let i = 0;
+  parsedML.textSections.forEach((textSection, _) => {
+    jsxSections.push(textSectionToJsx(textSection, i));
+    i += 1;
   });
 
   return (

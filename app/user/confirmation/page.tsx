@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { NEXT_PUBLIC_BACKEND_SERVER } from "@/app/network/util"; // Ensure your backend URL is set here
 import Sidebar from "@/app/components/side_bar";
 
-export default function ConfirmUserPage() {
+function ConfirmUserContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [message, setMessage] = useState<string | null>(null);
@@ -52,12 +52,20 @@ export default function ConfirmUserPage() {
   }, [searchParams]);
 
   return (
+    <div className="confirmation-container">
+      <h1>Email Confirmation</h1>
+      {loading ? <p>Loading...</p> : <p>{message}</p>}
+    </div>
+  );
+}
+
+export default function ConfirmUserPage() {
+  return (
     <div>
       <Sidebar />
-      <div className="confirmation-container">
-        <h1>Email Confirmation</h1>
-        {loading ? <p>Loading...</p> : <p>{message}</p>}
-      </div>
+      <Suspense>
+        <ConfirmUserContent />
+      </Suspense>
     </div>
   );
 }

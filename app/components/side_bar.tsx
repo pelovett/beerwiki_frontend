@@ -2,10 +2,10 @@ import BLink from "./beer_link";
 
 export default function Sidebar() {
   return (
-    <div className="hidden flex-col min-w-44 mx-2 sm:flex">
+    <div className="flex-col min-w-44 mx-2 hidden sm:flex">
       <div className="flex flex-col items-center">
         <p className="text-center text-[4rem] select-none">🍺</p>
-        <p className="text-center text-[2rem] mb-2">Beer Wiki</p>
+        <p className="text-center text-[2rem] mb-2 font-serif">Hop Wiki</p>
         <hr className="self-center w-3/4" />
       </div>
       <div className="flex flex-col items-center mt-5 space-y-5">

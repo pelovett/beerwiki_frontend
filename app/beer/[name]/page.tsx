@@ -1,4 +1,5 @@
 import Sidebar from "@/app/components/side_bar";
+import TopBar from "@/app/components/top_bar";
 import BLink from "../../components/beer_link";
 import { getBeer } from "../../api_calls/beer_calls";
 import { formatAndRenderText } from "../../ipa_ml/ml_rendering";

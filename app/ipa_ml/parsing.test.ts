@@ -121,6 +121,6 @@ tile: Beer`;
 
     expectedResult.set("title", "beer");
     expectedResult.set("abv", "7");
-    expect(parseInfoBox(testContent)).toStrictEqual(expectedResult);
+    expect(parseInfoBox(testContent)).toStrictEqual([43, expectedResult]);
   });
 });
