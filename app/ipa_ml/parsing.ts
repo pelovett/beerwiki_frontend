@@ -1,8 +1,8 @@
 const inBlockOpList = ["*", "`"];
 
 export type formattedContent = {
-    info: Map<string, string>;
-    textSections: formattedTextSection[];
+  info: Map<string, string>;
+  textSections: formattedTextSection[];
 };
 export type formattedTextSection = {
   text: string;
@@ -51,15 +51,15 @@ export function parseBlock(rawText: string): formattedContent {
   }
   fixUnmatchedSections(opLastSeen, opCount, textResult);
   return {
-    info: infoBox, 
+    info: infoBox,
     textSections: Array.from(textResult.values()),
-  }
+  };
 }
 
 function fixUnmatchedSections(
   opLastSeen: Map<string, number>,
   opCount: Map<string, number>,
-  textResult: Map<number, formattedTextSection>,
+  textResult: Map<number, formattedTextSection>
 ) {
   opCount.forEach((count, operator) => {
     if (count % 2 === 1) {
@@ -72,7 +72,7 @@ function fixUnmatchedSections(
 function fixUnmatchedOp(
   operator: string,
   opPos: number,
-  textResult: Map<number, formattedTextSection>,
+  textResult: Map<number, formattedTextSection>
 ) {
   const prevText = textResult.get(opPos)?.text ?? "";
   const newText = operator + prevText;
@@ -91,14 +91,14 @@ function fixUnmatchedOp(
 
 function setOpFalseInTable(
   operator: string,
-  lookupTable: Map<string, boolean>,
+  lookupTable: Map<string, boolean>
 ) {
   lookupTable.set(operator, false);
 }
 
 function newTextSection(
   operator?: string,
-  prevTextSection?: formattedTextSection,
+  prevTextSection?: formattedTextSection
 ) {
   let newTable = new Map(prevTextSection?.lookupTable ?? getLookupTable());
   if (!!operator && inBlockOpList.includes(operator)) {
@@ -118,7 +118,7 @@ function newTextSection(
 
 export function parseInfoBox(content: string): [number, Map<string, string>] {
   const resultMap = new Map<string, string>();
-  const allowedKeys = ["title", "abv"];
+  const allowedKeys = ["title", "abv", "ibu", "brewer"];
   const state: {
     insideInfoBox: boolean;
     firstNewlineSeen: boolean;
@@ -142,10 +142,10 @@ export function parseInfoBox(content: string): [number, Map<string, string>] {
     throw Error("Infobox too short");
   }
   const boxStart = parseFirstLine(content);
-  let i = boxStart
+  let i = boxStart;
   for (; i < content.length; i++) {
-    if (content[i] === '}') {
-        break;
+    if (content[i] === "}") {
+      break;
     }
     if (!state.insideInfoBox) {
     }

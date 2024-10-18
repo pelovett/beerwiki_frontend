@@ -147,7 +147,10 @@ export default function SearchBar({
         />
         <div className="absolute inset-y-0 right-0 flex items-center h-9">
           <button
-            className="flex rounded-e-md justify-center items-center bg-blue-600 py-4 w-[3rem] h-full"
+            className={
+              "flex rounded-e-md justify-center items-center bg-blue-600" +
+              " py-4 w-[3rem] h-full"
+            }
             type="submit"
             onClick={() => router.push(`/search?query=${query}`)}
           >

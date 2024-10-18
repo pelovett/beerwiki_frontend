@@ -12,7 +12,7 @@ describe("parser module", () => {
     const testText = "Testing this text with the *bold* operator in it";
     const defaultTable = getLookupTable();
     const boldTrueTable = getLookupTable().set("*", true);
-    const expectedResult: formattedTextSection[] = []; 
+    const expectedResult: formattedTextSection[] = [];
     expectedResult.push({
       text: "Testing this text with the ",
       lookupTable: defaultTable,
@@ -33,7 +33,7 @@ describe("parser module", () => {
     const boldTrueTable = getLookupTable().set("*", true);
     const italicsTrueTable = getLookupTable().set("`", true);
     const boldItalicsTrueTable = getLookupTable().set("*", true).set("`", true);
-    const expectedTextSections: formattedTextSection[] = []; 
+    const expectedTextSections: formattedTextSection[] = [];
     expectedTextSections.push({
       text: "raw ",
       lookupTable: defaultTable,
@@ -55,7 +55,9 @@ describe("parser module", () => {
       lookupTable: defaultTable,
     });
 
-    expect(parseBlock(testText).textSections).toStrictEqual(expectedTextSections);
+    expect(parseBlock(testText).textSections).toStrictEqual(
+      expectedTextSections
+    );
   });
   test("Test single asterisks", () => {
     const testText = "raw *fake bold ` italic` raw again";
@@ -63,7 +65,7 @@ describe("parser module", () => {
     const boldTrueTable = getLookupTable().set("*", true);
     const italicsTrueTable = getLookupTable().set("`", true);
     const boldItalicsTrueTable = getLookupTable().set("*", true).set("`", true);
-    const expectedResult: formattedTextSection[] = []; 
+    const expectedResult: formattedTextSection[] = [];
     expectedResult.push({
       text: "raw ",
       lookupTable: defaultTable,
@@ -111,6 +113,7 @@ tile: Beer`;
   test("Simple complete info box", () => {
     const testContent = `{
         title: beer
+        ibu: 70
         abv: 7
       }`;
 

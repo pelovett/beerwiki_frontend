@@ -6,7 +6,7 @@ import TopBar from "@/app/components/top_bar";
 import SideBar from "@/app/components/side_bar";
 import { formatAndRenderText } from "../../../ipa_ml/ml_rendering";
 import { IpaMlInput } from "../ipa_ml_input";
-import { getBeerIPAML, setBeerIPAML } from "../../../api_calls/beer_calls";
+import { getBeer, setBeerIPAML } from "../../../api_calls/beer_calls";
 
 const REVALIDATION_TIMEOUT_SEC = 60;
 
@@ -19,11 +19,11 @@ export default function Page({
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     async function getDescriptionFromAPI() {
-      const beerDescription = await getBeerIPAML(
-        name,
-        REVALIDATION_TIMEOUT_SEC
-      );
-      setInputText(beerDescription);
+      const beerContent = await getBeer(name, REVALIDATION_TIMEOUT_SEC);
+      if (beerContent === null) {
+        throw new Error(`No beer found with name ${name}`);
+      }
+      setInputText(beerContent.ipaml);
     }
 
     getDescriptionFromAPI();

@@ -1,11 +1,9 @@
 import Sidebar from "@/app/components/side_bar";
 import TopBar from "@/app/components/top_bar";
 import BLink from "../../components/beer_link";
-import { getBeerIPAML, getBeerName } from "../../api_calls/beer_calls";
+import { getBeer } from "../../api_calls/beer_calls";
 import { formatAndRenderText } from "../../ipa_ml/ml_rendering";
 
-const NEXT_PUBLIC_BACKEND_SERVER =
-  process.env.NEXT_PUBLIC_BACKEND_SERVER || "http://localhost:8888";
 const REVALIDATION_TIMEOUT_SEC = 0;
 
 export default async function Page({
@@ -13,55 +11,29 @@ export default async function Page({
 }: {
   params: { name: string };
 }) {
-  const [beerName, ipaMlContent] = await Promise.all([
-    getBeerName(name, REVALIDATION_TIMEOUT_SEC),
-    getBeerIPAML(name, REVALIDATION_TIMEOUT_SEC),
-  ]);
+  const pageContent = await getBeer(name, REVALIDATION_TIMEOUT_SEC);
+  if (!pageContent) {
+    return <div>No beer found</div>;
+  }
 
-  const pageContent = formatAndRenderText(ipaMlContent);
+  const mlContent = formatAndRenderText(pageContent.ipaml);
   const editUrl = `/beer/edit/${name}`;
   return (
-    <>
-      <TopBar />
-      <div className="flex flex-row max-w-[99.75rem] mt-4 w-full">
-        <Sidebar />
-        <div className="w-full mx-3 sm:mx-5">
-          <div
-            className={
-              "flex flex-column justify-between w-full" +
-              " items-start border-solid border-b-2" +
-              " pr-4"
-            }
-          >
-            <h1 className="text-3xl font-serif">{beerName}</h1>
-            <BLink url={editUrl} text="edit" font="font-medium" />
-          </div>
-          <div className="font-serif w-full">{pageContent}</div>
+    <div className="flex flex-row max-w-[99.75rem] mt-4 sm:mt-12 w-full">
+      <Sidebar />
+      <div className="w-full max-w-[59.25rem] mr-6 ml-6 sm:ml-0">
+        <div
+          className={
+            "flex flex-column justify-between w-full" +
+            " items-start border-solid border-b-2" +
+            " pr-4"
+          }
+        >
+          <h1 className="text-3xl font-serif">{pageContent.name}</h1>
+          <BLink url={editUrl} text="edit" font="font-medium" />
         </div>
+        <div className="font-serif w-full mt-4 block">{mlContent}</div>
       </div>
-    </>
+    </div>
   );
-}
-
-async function getBeerInfo(beer_name: string): Promise<string> {
-  let data;
-  try {
-    const res = await fetch(
-      NEXT_PUBLIC_BACKEND_SERVER + `/beer/name/${beer_name}`,
-      {
-        next: { revalidate: REVALIDATION_TIMEOUT_SEC },
-      }
-    );
-    data = await res.json();
-  } catch (err) {
-    console.error(err);
-    console.log(`Failed to fetch beer page: ${beer_name} err: ${err}`);
-  }
-
-  if (!data?.name) {
-    console.error("No beer message returned from backend!");
-    return "";
-  }
-
-  return data.name;
 }
