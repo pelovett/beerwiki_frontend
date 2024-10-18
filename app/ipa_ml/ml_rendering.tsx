@@ -26,13 +26,13 @@ export function formatAndRenderText(text: string) {
 
   return (
     <>
-      {renderInfoBox(parsedML.info)}
       <div
         className="text-pretty text-base max-w-full break-all"
         style={{ wordBreak: "break-word" }}
       >
         {jsxSections}
       </div>
+      {renderInfoBox(parsedML.info)}
     </>
   );
 }
