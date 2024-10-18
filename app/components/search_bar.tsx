@@ -164,7 +164,10 @@ export default function SearchBar({
         <div
           tabIndex={-1}
           ref={resultsContainerRef}
-          className="absolute flex flex-col z-10 mt-1 bg-white rounded-md border border-gray-300 shadow-lg w-[28rem]"
+          className={
+            "absolute flex flex-col z-10 mt-1 bg-white rounded-md" +
+            " border border-gray-300 shadow-lg w-[90%] sm:w-[28rem] "
+          }
         >
           {searchResults.map((result, index) => (
             <Link

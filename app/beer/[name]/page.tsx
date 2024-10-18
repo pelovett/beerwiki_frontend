@@ -1,4 +1,5 @@
 import Sidebar from "@/app/components/side_bar";
+import TopBar from "@/app/components/top_bar";
 import BLink from "../../components/beer_link";
 import { getBeerIPAML, getBeerName } from "../../api_calls/beer_calls";
 import { formatAndRenderText } from "../../ipa_ml/ml_rendering";
@@ -20,22 +21,25 @@ export default async function Page({
   const pageContent = formatAndRenderText(ipaMlContent);
   const editUrl = `/beer/edit/${name}`;
   return (
-    <div className="flex flex-row max-w-[99.75rem] mt-12 w-full">
-      <Sidebar />
-      <div className="w-full mr-2">
-        <div
-          className={
-            "flex flex-column justify-between w-full" +
-            " items-start border-solid border-b-2" +
-            " pr-4"
-          }
-        >
-          <h1 className="text-3xl font-serif">{beerName}</h1>
-          <BLink url={editUrl} text="edit" font="font-medium" />
+    <>
+      <TopBar />
+      <div className="flex flex-row max-w-[99.75rem] mt-4 w-full">
+        <Sidebar />
+        <div className="w-full mx-3 sm:mx-5">
+          <div
+            className={
+              "flex flex-column justify-between w-full" +
+              " items-start border-solid border-b-2" +
+              " pr-4"
+            }
+          >
+            <h1 className="text-3xl font-serif">{beerName}</h1>
+            <BLink url={editUrl} text="edit" font="font-medium" />
+          </div>
+          <div className="font-serif w-full">{pageContent}</div>
         </div>
-        <div className="font-serif w-full">{pageContent}</div>
       </div>
-    </div>
+    </>
   );
 }
 
