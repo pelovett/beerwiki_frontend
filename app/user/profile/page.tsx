@@ -1,15 +1,12 @@
+// app/user/profile/page.tsx
 import VerifyUser from "@/app/components/verify_user";
-import Message from "@/app/components/verify_user";
-import React from "react";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
-  console.log("good");
-
   const userVerified = await VerifyUser();
-
   return (
     <main style={{ height: "100%" }}>
-      {userVerified ? <div>verified</div> : <div>Unverified</div>}
+      <div>Verified</div>
     </main>
   );
 }
