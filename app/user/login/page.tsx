@@ -1,12 +1,14 @@
 "use client";
 
-import { FormEvent } from "react";
+import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { NEXT_PUBLIC_BACKEND_SERVER } from "@/app/network/util";
 import Sidebar from "@/app/components/side_bar";
 
 export default function LoginPage() {
   const router = useRouter();
+  const [popupVisible, setPopupVisible] = useState(false);
+  const [popupMessage, setPopupMessage] = useState("");
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -24,11 +26,25 @@ export default function LoginPage() {
 
     if (response.ok) {
       console.log("good");
+      // Redirect the user to another page after successful confirmation
+      setTimeout(() => {
+        router.push("/user/profile");
+      }, 500); // Redirect after 2 seconds
     } else {
       console.error(response);
-      console.log;
+      const errorResponse = await response.json(); // Parse the error response as JSON
+      console.log("Error Response:", errorResponse); // Log the entire error response for debugging
+
+      // Access the error message and set it for the popup
+      setPopupMessage(`Error: ${errorResponse.error}`); // Set the message to display the error
+      setPopupVisible(true);
     }
   }
+
+  function closePopup() {
+    setPopupVisible(false);
+  }
+
   return (
     <div className="relative min-h-screen flex items-center justify-center">
       <div className="fixed left-0 top-0">
@@ -65,6 +81,20 @@ export default function LoginPage() {
           </a>
         </form>
       </div>
+      {/* Popup */}
+      {popupVisible && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-md shadow-md text-center">
+            <p>{popupMessage}</p>
+            <button
+              onClick={closePopup}
+              className="mt-4 p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
