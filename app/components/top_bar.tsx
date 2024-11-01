@@ -15,9 +15,9 @@ export default function TopBar() {
             <svg
               className="h-7 w-7"
               fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
@@ -33,7 +33,7 @@ export default function TopBar() {
           <div
             className={
               "peer-checked:flex hidden flex-col items-start" +
-              " absolute top-8 right-1 z-1" +
+              " absolute top-8 right-1 z-10" +
               " w-max px-4 py-3 space-y-3" +
               " bg-white border-solid border-2 rounded-sm"
             }

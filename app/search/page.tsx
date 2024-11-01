@@ -8,10 +8,22 @@ import SearchBar from "../components/search_bar";
 import { NEXT_PUBLIC_BACKEND_SERVER } from "../network/util";
 import BLink from "../components/beer_link";
 import TopBar from "../components/top_bar";
+import BeerStyleTag from "../components/tags/beer_style_tag";
+import FlagTag from "../components/tags/country_tag";
 
 interface SearchResult {
   name: string;
   url_name: string;
+}
+
+function randomStyle(): string {
+  return ["Pale Ale", "Lager", "Stout"][
+    Math.min(2, Math.floor(Math.random() * 3))
+  ];
+}
+
+function randomCountry(): string {
+  return ["USA", "CAN"][Math.min(1, Math.floor(Math.random() * 2))];
 }
 
 function SearchBody() {
@@ -60,7 +72,7 @@ function SearchBody() {
         </h1>
         <div
           className={
-            "mb-5 w-[90%] sm:w-4/5 mt-1 sm:mt-4 ml-4 sm:ml-5" +
+            "mb-5 w-[98%] sm:w-[90%] sm:w-4/5 mt-1 sm:mt-4 sm:ml-5" +
             " sm:max-w-[30rem] self-center sm:self-start"
           }
         >
@@ -69,10 +81,32 @@ function SearchBody() {
         {loading ? (
           <p>Loading results...</p>
         ) : (
-          <ul className="ml-3 space-y-5">
+          <ul className="ml-3 sm:ml-5 list-inside">
             {searchResults?.map((result) => (
-              <div key={result.url_name}>
-                <BLink url={"/beer/" + result.url_name} text={result.name} />
+              <div
+                className={
+                  "flex flex-col border-b-[1px] last:border-b-0" +
+                  " pt-4 sm:pt-5 first:pt-0 pb-4 sm:pb-5 last:pb-0"
+                }
+                key={result.url_name}
+              >
+                <BLink
+                  font="font-medium"
+                  url={"/beer/" + result.url_name}
+                  text={result.name}
+                />
+                <span className="font-semibold text-xs my-[0.25rem]">
+                  Buoy Beer Company
+                </span>
+                <div className="flex flex-row align-items justify-start space-x-1 sm:space-x-2">
+                  {/*  TODO get these for real */}
+                  <BeerStyleTag style={randomStyle()} />
+                  <FlagTag country={randomCountry()} />
+                </div>
+                <span className="mx-0">
+                  Lorem ipsum odor amet, consectetuer adipiscing elit.
+                  Feugiat...
+                </span>
               </div>
             ))}
           </ul>
