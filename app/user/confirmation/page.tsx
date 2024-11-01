@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { NEXT_PUBLIC_BACKEND_SERVER } from "@/app/network/util";
 import Sidebar from "@/app/components/side_bar";
 
-function ConfirmUserContent() {
+function ConfirmUserBody() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [message, setMessage] = useState<string | null>(null);
@@ -78,6 +78,14 @@ function ConfirmUserContent() {
         </div>
       </div>
     </div>
+  );
+}
+
+function ConfirmUserContent() {
+  return (
+    <Suspense>
+      <ConfirmUserBody />
+    </Suspense>
   );
 }
 
