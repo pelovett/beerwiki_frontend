@@ -96,7 +96,7 @@ export default function Page({
       <TopBar />
       {editTopBar}
       <div className="flex flex-col w-full h-full my-3 sm:my-6">
-        <div className="flex sm:hidden flex-row self-center w-full h-full my-6">
+        <div className="flex sm:hidden flex-row self-center w-full h-full my-0">
           {checked ? (
             <div className="flex w-full mx-4">{textJsx}</div>
           ) : (
@@ -125,7 +125,7 @@ export default function Page({
         <div className="hidden sm:flex flex-row-reverse w-4/5">
           <button
             type="submit"
-            className="p-2 h-8 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+            className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
             onClick={saveBeerDescription}
           >
             Save
