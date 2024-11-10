@@ -5,7 +5,6 @@ import { useEffect, useState, ReactElement } from "react";
 import TopBar from "@/app/components/top_bar";
 import SideBar from "@/app/components/side_bar";
 import { formatAndRenderText } from "../../../ipa_ml/ml_rendering";
-import { IpaMlInput } from "../ipa_ml_input";
 import { getBeerIPAML, setBeerIPAML } from "../../../api_calls/beer_calls";
 import IPAMLEditor from "../../../components/ipa_ml_editor";
 
