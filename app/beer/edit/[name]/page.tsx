@@ -38,7 +38,7 @@ export default function Page({
     }
   }
 
-  const editor = IPAMLEditor();
+  const editor = IPAMLEditor({inputText, setInputText, disabled: loading});
 
   const [checked, setChecked] = useState(false);
 
@@ -102,11 +102,6 @@ export default function Page({
           ) : (
             <div className="flex flex-col w-full mx-4">
               {editor}
-              <IpaMlInput
-                inputText={inputText}
-                setInputText={setInputText}
-                disabled={loading}
-              />
             </div>
           )}
         </div>
@@ -114,11 +109,6 @@ export default function Page({
           <SideBar />
           <div className="w-2/4 mx-5">
             {editor}
-            <IpaMlInput
-              inputText={inputText}
-              setInputText={setInputText}
-              disabled={loading}
-            />
           </div>
           <div className="max-w-[50%] w-2/4 mx-5">{textJsx}</div>
         </div>

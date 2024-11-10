@@ -1,11 +1,27 @@
 import {ReactElement} from "react";
+import { IpaMlInput } from "../beer/edit/ipa_ml_input";
 
-export default function IPAMLEditor() {
+type IPAMLEditorProps = {
+  inputText: string;
+  setInputText: (payload: string) => void;
+  disabled: boolean;
+};
+
+export default function IPAMLEditor({
+  inputText,
+  setInputText,
+  disabled,
+}: IPAMLEditorProps) {
   const bBar = EditorButtonBar();
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col h-full w-full">
       {bBar} 
+      <IpaMlInput
+        inputText={inputText}
+        setInputText={setInputText}
+        disabled={disabled}
+      />
     </div>
   );
 
