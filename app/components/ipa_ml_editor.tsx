@@ -1,4 +1,4 @@
-import { ReactElement, useRef, forwardRef } from "react";
+import { ReactElement, useRef, forwardRef, MutableRefObject } from "react";
 import { IpaMlInput } from "../beer/edit/ipa_ml_input";
 
 type IPAMLEditorProps = {
@@ -7,22 +7,27 @@ type IPAMLEditorProps = {
   disabled: boolean;
 };
 
+// Keep track of selection
+interface SelectionState {
+  start: number;
+  end: number;
+}
+
 export default function IPAMLEditor({
   inputText,
   setInputText,
   disabled,
 }: IPAMLEditorProps) {
-  const textRef = useRef(null)
-  const bBar = EditorButtonBar();
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const textBox = (
     <IpaMlInput
+      ref={textareaRef}
       inputText={inputText}
       setInputText={setInputText}
       disabled={disabled}
-      ref={forwardRef(textRef)}
     />
   );
-
+  const bBar = EditorButtonBar(textareaRef);
 
   return (
     <div className="flex flex-col h-full w-full">
@@ -32,12 +37,18 @@ export default function IPAMLEditor({
   );
 }
 
-function EditorButtonBar(textRef: MutableRefObject<null>) {
-  const boldButton = ButtonChip({ bSymbol: "B", emphasis: "font-bold" , textRef});
+function EditorButtonBar(textRef: React.RefObject<HTMLTextAreaElement>) {
+  const boldButton = ButtonChip({
+    bSymbol: "B",
+    charInsert: "*",
+    emphasis: "font-bold",
+    textRef,
+  });
   const italicsButton = ButtonChip({
     bSymbol: "i",
+    charInsert: "`",
     emphasis: "font-style: italic",
-    textRef
+    textRef,
   });
   return (
     <div className="flex flex-row w-full border-solid border-2 border-gray-300 rounded e-md h-[2rem]">
@@ -56,14 +67,20 @@ function ButtonChip({
   bSymbol: string;
   emphasis: string;
   charInsert: string;
-  textRef: MutableRefObject<null>;
+  textRef: React.RefObject<HTMLTextAreaElement>;
 }): ReactElement {
   const buttonOnClick = () => {
-    const keyPressEvent = new KeyboardEvent('keydown', {
-      key: charInsert
-    });
-    textRef.current.dispatchEvent(keyPressEvent);
-  }
+    console.log("Attempting click");
+    if (textRef.current) {
+      console.log("ref exists");
+      const keyPressEvent = new KeyboardEvent("keydown", {
+        key: charInsert,
+        bubbles: true,
+        cancelable: true,
+      });
+      textRef.current.dispatchEvent(keyPressEvent);
+    }
+  };
   return (
     <button
       className={
