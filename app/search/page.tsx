@@ -5,7 +5,7 @@ import { useEffect, useState, Suspense } from "react";
 
 import Sidebar from "../components/side_bar";
 import SearchBar from "../components/search_bar";
-import { NEXT_PUBLIC_BACKEND_SERVER } from "../network/util";
+import { NEXT_PUBLIC_BACKEND_SERVER } from "../utils/network/util";
 import BLink from "../components/beer_link";
 import TopBar from "../components/top_bar";
 import BeerStyleTag from "../components/tags/beer_style_tag";
@@ -17,13 +17,33 @@ interface SearchResult {
 }
 
 function randomStyle(): string {
-  return ["Pale Ale", "Lager", "Stout"][
-    Math.min(2, Math.floor(Math.random() * 3))
-  ];
+  return [
+    "Pale Lager",
+    "Pilsner",
+    "Stout",
+    "Dunkel",
+    "English Bitter",
+    "Douple IPA",
+    "India Pale Ale",
+    "Saison",
+  ][Math.min(7, Math.floor(Math.random() * 8))];
 }
 
 function randomCountry(): string {
-  return ["USA", "CAN"][Math.min(1, Math.floor(Math.random() * 2))];
+  return [
+    "USA",
+    "CAN",
+    "JPY",
+    "GBR",
+    "DEU",
+    "FRA",
+    "ITA",
+    "ESP",
+    "CHN",
+    "RUS",
+    "KOR",
+    "IND",
+  ][Math.min(11, Math.floor(Math.random() * 12))];
 }
 
 function SearchBody() {
@@ -98,7 +118,12 @@ function SearchBody() {
                 <span className="font-semibold text-xs my-[0.25rem]">
                   Buoy Beer Company
                 </span>
-                <div className="flex flex-row align-items justify-start space-x-1 sm:space-x-2">
+                <div
+                  className={`
+                    flex flex-row align-items justify-start 
+                    space-x-1 sm:space-x-2 mb-1
+                    `}
+                >
                   {/*  TODO get these for real */}
                   <BeerStyleTag style={randomStyle()} />
                   <FlagTag country={randomCountry()} />

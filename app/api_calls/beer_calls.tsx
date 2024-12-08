@@ -1,3 +1,5 @@
+import { BaseNextRequest } from "next/dist/server/base-http";
+
 const BACKEND_SERVER =
   process.env.NEXT_PUBLIC_BACKEND_SERVER || "http://localhost:8888";
 
@@ -36,8 +38,27 @@ export async function getBeer(
 export async function newBeer(
   beer_url_name: string,
   beer_name: string,
+  brewery_location: string,
+  beer_style: string,
   new_description: string
 ): Promise<Boolean> {
+  const info_box = new Map<string, string>();
+  if (beer_name !== "") {
+    info_box.set("title", beer_name);
+  }
+  if (brewery_location !== "") {
+    info_box.set("location", brewery_location);
+  }
+  if (beer_style !== "") {
+    info_box.set("style", beer_style);
+  }
+
+  let info_box_str = "{\n";
+  info_box.forEach((value, key) => {
+    info_box_str += key + ": " + value + "\n";
+  });
+  info_box_str += "}\n";
+
   let data;
   try {
     const res = await fetch(BACKEND_SERVER + "/beer/", {
@@ -49,7 +70,7 @@ export async function newBeer(
       body: JSON.stringify({
         url_name: beer_url_name,
         name: beer_name,
-        page_ipa_ml: new_description,
+        page_ipa_ml: info_box_str + new_description,
       }),
     });
     data = await res.json();

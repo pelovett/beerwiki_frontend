@@ -2,7 +2,7 @@
 
 import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { NEXT_PUBLIC_BACKEND_SERVER } from "@/app/network/util";
+import { NEXT_PUBLIC_BACKEND_SERVER } from "@/app/utils/network/util";
 import Sidebar from "@/app/components/side_bar";
 
 function ConfirmUserBody() {

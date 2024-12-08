@@ -1,35 +1,34 @@
-"use client";
+import { Dispatch, SetStateAction, useState, useEffect, useRef } from "react";
 
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { ReactElement, useEffect, useRef, useState } from "react";
+import { NEXT_PUBLIC_BACKEND_SERVER } from "../../utils/network/util";
 
-import { NEXT_PUBLIC_BACKEND_SERVER } from "../utils/network/util";
-
-type SearchResult = {
+type CityResult = {
   name: string;
-  url_name: string;
+  flag: string;
+  admin_name: string;
 };
 
-export default function SearchBar({
-  startQuery,
+function cityDisplayName(city: CityResult): string {
+  return city.name + ", " + city.admin_name + "  " + city.flag;
+}
+
+export default function BrewerLocationInput({
+  breweryLocation,
+  setBreweryLocation,
 }: {
-  startQuery?: string;
-}): ReactElement {
-  const router = useRouter();
-  const [query, setQuery] = useState(startQuery || "");
-  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  breweryLocation: string;
+  setBreweryLocation: Dispatch<SetStateAction<string>>;
+}) {
   const [lastSearchTime, setLastSearchTime] = useState(Date.now());
+  const [searchResults, setSearchResults] = useState<CityResult[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const resultsContainerRef = useRef<any>(null);
-  const inputRef = useRef<any>(null);
 
   // Process entered queries
   const handleInputChange = (event: { target: { value: string } }) => {
     const query = event.target.value;
     const runTime = Date.now();
-    setQuery(query);
+    setBreweryLocation(query);
 
     // Only send request every 500ms
     if (
@@ -40,7 +39,7 @@ export default function SearchBar({
       setLastSearchTime(runTime);
       fetch(
         NEXT_PUBLIC_BACKEND_SERVER +
-          `/search/beer?q=${encodeURIComponent(query.trim())}`
+          `/util/city-search?q=${encodeURIComponent(query.trim())}`
       )
         .then((response) => {
           if (response.status === 404) {
@@ -55,13 +54,15 @@ export default function SearchBar({
         .then((data) => {
           setSelectedIndex(-1);
           setSearchResults(
-            data.results
-              .filter((x: any) => parseFloat(x.similarity_score) > 0.1)
-              .map((x: any) => ({
+            data.results.map(
+              (x: any): CityResult => ({
                 name: x.name,
-                url_name: x.url_name,
-              }))
+                flag: x.flag,
+                admin_name: x.admin_name,
+              })
+            )
           );
+          console.log(searchResults);
         })
         .catch((err) => {
           console.log(`Error fetching search results: ${query} err: ${err}`);
@@ -89,12 +90,9 @@ export default function SearchBar({
       setSearchResults([]);
     } else if (event.key === "Enter") {
       event.preventDefault();
-      console.log(`Detected 'enter' press! ${selectedIndex}`);
       if (selectedIndex !== -1) {
         const result = searchResults[selectedIndex];
-        router.push(`/beer/${result.url_name}`);
-      } else {
-        router.push(`/search?query=${query}`);
+        setBreweryLocation(cityDisplayName(result));
       }
     }
   };
@@ -133,56 +131,42 @@ export default function SearchBar({
   }, []);
 
   return (
-    <>
-      <div className="relative mt-2 mb-1 rounded-md shadow-sm w-full h-[2rem]">
-        <input
-          type="text"
-          name="price"
-          id="price"
-          autoComplete="off"
-          value={query}
-          ref={inputRef}
-          onChange={handleInputChange}
-          className="block w-full rounded-md border-0 py-1.5 pl-3.5 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
-        />
-        <div className="absolute inset-y-0 right-0 flex items-center h-9">
-          <button
-            className={
-              "flex rounded-e-md justify-center items-center bg-blue-600" +
-              " py-4 w-[3rem] h-full"
-            }
-            type="submit"
-            onClick={() => router.push(`/search?query=${query}`)}
-          >
-            <Image
-              src="/search.svg"
-              alt="Submit search"
-              width={25}
-              height={25}
-            />
-          </button>
-        </div>
-      </div>
+    <div className="relative flex flex-col gap-2">
+      <h1 className="border-solid border-b-2 text-xl font-serif">
+        Brewery Location
+      </h1>
+      <input
+        className={
+          "border-solid rounded-md border-2 border-gray-300 w-full" +
+          " mx-5 ml-0 p-2"
+        }
+        placeholder="Beertown, USA"
+        value={breweryLocation}
+        onChange={handleInputChange}
+      />
       {searchResults.length > 0 && (
         <div
           tabIndex={-1}
           ref={resultsContainerRef}
           className={
-            "absolute flex flex-col z-10 mt-1 bg-white rounded-md" +
-            " border border-gray-300 shadow-lg w-[90%] sm:w-[28rem] "
+            "absolute flex flex-col z-10 mt-[5.5rem] bg-white rounded-md" +
+            " border border-gray-300 shadow-lg w-full sm:w-[28rem] "
           }
         >
           {searchResults.map((result, index) => (
-            <Link
+            <span
               key={index}
-              href={`/beer/${result.url_name}`}
               className={`px-4 py-2 ${index === selectedIndex ? "bg-gray-200" : ""} ${index === 0 ? "border-b" : index === searchResults.length - 1 ? "border-t" : "border-y"}`}
+              onClick={() => {
+                setBreweryLocation(cityDisplayName(result));
+                setSearchResults([]);
+              }}
             >
-              {result.name}
-            </Link>
+              {cityDisplayName(result)}
+            </span>
           ))}
         </div>
       )}
-    </>
+    </div>
   );
 }

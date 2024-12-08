@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { NEXT_PUBLIC_BACKEND_SERVER } from "../network/util";
+import { NEXT_PUBLIC_BACKEND_SERVER } from "../utils/network/util";
 import { redirect } from "next/navigation";
 
 export default async function VerifyUser(): Promise<Boolean> {

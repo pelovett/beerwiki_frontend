@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 
-import { NEXT_PUBLIC_BACKEND_SERVER } from "@/app/network/util";
+import { NEXT_PUBLIC_BACKEND_SERVER } from "@/app/utils/network/util";
 
 export const uploadImage = async (
   image: File,

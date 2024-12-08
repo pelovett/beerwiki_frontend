@@ -118,7 +118,7 @@ function newTextSection(
 
 export function parseInfoBox(content: string): [number, Map<string, string>] {
   const resultMap = new Map<string, string>();
-  const allowedKeys = ["title", "abv", "ibu", "brewer"];
+  const allowedKeys = ["title", "abv", "ibu", "brewer", "location", "style"];
   const state: {
     insideInfoBox: boolean;
     firstNewlineSeen: boolean;

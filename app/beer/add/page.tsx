@@ -5,14 +5,24 @@ import { newBeer } from "../../api_calls/beer_calls";
 import { IpaMlInput } from "../edit/ipa_ml_input";
 import { useState } from "react";
 import TopBar from "@/app/components/top_bar";
+import BrewerLocationInput from "./brewery_input";
+import BeerStyleInput from "./beer_style_input";
 
-export default function Page({}: {}) {
+export default function Page(): JSX.Element {
   const [ipaMlText, setIpaMlText] = useState("");
   const [beerUrlName, setBeerUrlName] = useState("");
   const [beerName, setBeerName] = useState("");
+  const [breweryLocation, setBreweryLocation] = useState("");
+  const [beerStyle, setBeerStyle] = useState("");
 
   async function saveBeer() {
-    const success = await newBeer(beerUrlName, beerName, ipaMlText);
+    const success = await newBeer(
+      beerUrlName,
+      beerName,
+      breweryLocation,
+      beerStyle,
+      ipaMlText
+    );
     if (success) {
       window.location.href = `/beer/${beerUrlName}`;
     }
@@ -59,6 +69,11 @@ export default function Page({}: {}) {
                 onChange={(e) => setBeerUrlName(e.target.value)}
               />
             </div>
+            <BrewerLocationInput
+              breweryLocation={breweryLocation}
+              setBreweryLocation={setBreweryLocation}
+            />
+            <BeerStyleInput beerStyle={beerStyle} setBeerStyle={setBeerStyle} />
             <div className="flex flex-col gap-4 h-[90%]">
               <h1 className="border-solid border-b-2 text-xl font-serif">
                 Enter Beer Description

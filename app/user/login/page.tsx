@@ -2,7 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { NEXT_PUBLIC_BACKEND_SERVER } from "@/app/network/util";
+import { NEXT_PUBLIC_BACKEND_SERVER } from "@/app/utils/network/util";
 import Sidebar from "@/app/components/side_bar";
 import TopBar from "@/app/components/top_bar";
 
