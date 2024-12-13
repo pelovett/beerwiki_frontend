@@ -1,11 +1,11 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { NEXT_PUBLIC_BACKEND_SERVER } from "@/app/network/util";
+import { NEXT_PUBLIC_BACKEND_SERVER } from "@/app/utils/network/util";
 import Sidebar from "@/app/components/side_bar";
 
-export default function LoginPage() {
+function LoginBody() {
   const searchParams = useSearchParams();
   const [popupVisible, setPopupVisible] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
@@ -132,5 +132,13 @@ export default function LoginPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginBody />
+    </Suspense>
   );
 }

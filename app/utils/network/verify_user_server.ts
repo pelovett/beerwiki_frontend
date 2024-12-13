@@ -1,8 +1,8 @@
 import { cookies } from "next/headers";
-import { NEXT_PUBLIC_BACKEND_SERVER } from "../utils/network/util";
+import { NEXT_PUBLIC_BACKEND_SERVER } from "./util";
 import { redirect } from "next/navigation";
 
-export default async function VerifyUser(): Promise<Boolean> {
+export default async function VerifyUserServer(): Promise<Boolean> {
   const authCookie = cookies().get("login_cookie");
 
   if (!authCookie || !authCookie.value) {

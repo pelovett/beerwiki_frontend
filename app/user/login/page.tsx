@@ -47,15 +47,9 @@ export default function LoginPage() {
   }
 
   return (
-<<<<<<< Updated upstream
     <>
       <TopBar />
-      <div
-        className={
-          "relative h-full sm:min-h-screen flex items-center" +
-          " justify-center mb-[9.5rem] sm:mb-0"
-        }
-      >
+      <div className="relative min-h-screen flex items-center justify-center mb-[9.5rem] sm:mb-0">
         <div className="fixed left-0 top-0">
           <Sidebar />
         </div>
@@ -76,55 +70,12 @@ export default function LoginPage() {
               className="p-2 border border-gray-300 rounded-md"
               required
             />
-=======
-    <div className="relative min-h-screen flex items-center justify-center">
-      <div className="fixed left-0 top-0">
-        <Sidebar />
-      </div>
-      <div className="flex flex-col p-8 bg-white shadow-lg rounded-lg w-full max-w-md mx-auto">
-        <h1 className="text-3xl font-serif mb-4">Login</h1>
-        <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            className="p-2 border border-gray-300 rounded-md"
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            className="p-2 border border-gray-300 rounded-md"
-            required
-          />
-          <a
-            href="/user/forgot-password"
-            className="text-blue-500 hover:underline text-sm self-start"
-          >
-            Forgot password?
-          </a>
-
-          <button
-            type="submit"
-            className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-          >
-            Login
-          </button>
-          <a
-            href="/user/create-user"
-            className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 inline-block text-center"
-          >
-            Create User
-          </a>
-        </form>
-      </div>
-      {/* Popup */}
-      {popupVisible && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-md shadow-md text-center">
-            <p>{popupMessage}</p>
->>>>>>> Stashed changes
+            <a
+              href="/user/forgot-password"
+              className="text-blue-500 hover:underline text-sm self-start"
+            >
+              Forgot password?
+            </a>
             <button
               type="submit"
               className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
@@ -132,28 +83,28 @@ export default function LoginPage() {
               Login
             </button>
             <a
-              href="/user/create_user"
-              className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 inline-block text-center"
+              href="/user/create-user"
+              className="p-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 inline-block text-center"
             >
               Create User
             </a>
           </form>
         </div>
-        {/* Popup */}
-        {popupVisible && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white p-6 rounded-md shadow-md text-center">
-              <p>{popupMessage}</p>
-              <button
-                onClick={closePopup}
-                className="mt-4 p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        )}
       </div>
+      {/* Popup */}
+      {popupVisible && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-md shadow-md text-center">
+            <p>{popupMessage}</p>
+            <button
+              onClick={closePopup}
+              className="mt-4 p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 }

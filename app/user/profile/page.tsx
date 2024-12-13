@@ -1,9 +1,11 @@
+"use client";
+
 import Sidebar from "@/app/components/side_bar";
-import VerifyUser from "@/app/components/verify_user";
+import { VerifyUserClient } from "@/app/utils/network/verify_user_server";
 import LogoutButton from "@/app/components/logout_button";
 
 export default async function Home() {
-  const userVerified = await VerifyUser(); // Fetch user verification status
+  const userVerified = await VerifyUserClient(); // Fetch user verification status
 
   return (
     <div className="relative min-h-screen flex items-center justify-center">

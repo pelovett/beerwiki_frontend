@@ -3,17 +3,25 @@
 import Sidebar from "@/app/components/side_bar";
 import { newBeer } from "../../api_calls/beer_calls";
 import { IpaMlInput } from "../edit/ipa_ml_input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TopBar from "@/app/components/top_bar";
 import BrewerLocationInput from "./brewery_input";
 import BeerStyleInput from "./beer_style_input";
+import { VerifyUserClient } from "@/app/utils/network/verify_user_client";
+import { redirect } from "next/navigation";
 
-export default function Page(): JSX.Element {
+export default async function Page(): Promise<JSX.Element> {
   const [ipaMlText, setIpaMlText] = useState("");
   const [beerUrlName, setBeerUrlName] = useState("");
   const [beerName, setBeerName] = useState("");
   const [breweryLocation, setBreweryLocation] = useState("");
   const [beerStyle, setBeerStyle] = useState("");
+  const [areLoggedIn, setAreLoggedIn] = useState(true);
+
+  // Check if we're auth'd
+  useEffect(() => {
+    VerifyUserClient(window.document);
+  }, []);
 
   async function saveBeer() {
     const success = await newBeer(

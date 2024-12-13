@@ -3,7 +3,7 @@
 "use client"; // Mark this component as a client-side component
 
 import { useState } from "react";
-import { NEXT_PUBLIC_BACKEND_SERVER } from "../network/util";
+import { NEXT_PUBLIC_BACKEND_SERVER } from "@/app/utils/network/util";
 
 const LogoutButton = () => {
   const handleLogout = async () => {
