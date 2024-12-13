@@ -35,6 +35,23 @@ export async function getBeer(
   return { name: data.name, ipaml: data.page_ipa_ml };
 }
 
+export async function randomBeer(): Promise<string | null> {
+  let data;
+  try {
+    const res = await fetch(BACKEND_SERVER + "/beer/random");
+    data = await res.json();
+  } catch (err) {
+    console.error(err);
+    console.log("Failed to fetch random beer");
+  }
+
+  if (!data?.url_name) {
+    console.error(`Server didn't send back url_name: ${data}`);
+    return null;
+  }
+  return data.url_name;
+}
+
 export async function newBeer(
   beer_url_name: string,
   beer_name: string,

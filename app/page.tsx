@@ -13,8 +13,8 @@ export default function Home() {
             <SearchBar />
           </div>
           <div className="text-center mt-6 space-x-4">
+            <BLink url="/beer/random" text="Random Beer" font="font-medium" />
             <BLink url="/beer/add" text="Add Beer" font="font-medium" />
-            <BLink url="/image/add" text="Add Image" font="font-medium" />
           </div>
           <p className="text-center mt-6 mb-11">Drink responsibly!</p>
         </div>
