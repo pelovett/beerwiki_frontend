@@ -4,6 +4,7 @@ import { useEffect, useState, ReactElement } from "react";
 
 import TopBar from "@/app/components/top_bar";
 import SideBar from "@/app/components/side_bar";
+import TextEditor from "@/app/beer/testedit/page";
 import { formatAndRenderText } from "../../../ipa_ml/ml_rendering";
 import { getBeerIPAML, setBeerIPAML } from "../../../api_calls/beer_calls";
 import IPAMLEditor from "../../../components/ipa_ml_editor";
@@ -17,6 +18,22 @@ export default function Page({
 }) {
   const [inputText, setInputText] = useState("");
   const [loading, setLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+
+  //choose the screen size
+  const handleResize = () => {
+    if (window.innerWidth < 640) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+  };
+
+  // create an event listener
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+  });
+
   useEffect(() => {
     async function getDescriptionFromAPI() {
       const beerDescription = await getBeerIPAML(
@@ -37,7 +54,7 @@ export default function Page({
     }
   }
 
-  const editor = IPAMLEditor({inputText, setInputText, disabled: loading});
+  const editor = IPAMLEditor({ inputText, setInputText, disabled: loading });
 
   const [checked, setChecked] = useState(false);
 
@@ -95,21 +112,16 @@ export default function Page({
       <TopBar />
       {editTopBar}
       <div className="flex flex-col w-full h-full my-3 sm:my-6">
-        <div className="flex sm:hidden flex-row self-center w-full h-full my-0">
-          {checked ? (
+        <div className="flex flex-row self-center w-full h-full my-0 sm:my-6">
+          <SideBar />
+          {checked && isMobile ? (
             <div className="flex w-full mx-4">{textJsx}</div>
           ) : (
-            <div className="flex flex-col w-full mx-4">
+            <div className="flex flex-col w-full mx-4 sm:max-w-[50%] sm:w-2/4 sm:mx-5">
               {editor}
             </div>
           )}
-        </div>
-        <div className="hidden sm:flex flex-row self-center w-full h-full my-6">
-          <SideBar />
-          <div className="w-2/4 mx-5">
-            {editor}
-          </div>
-          <div className="max-w-[50%] w-2/4 mx-5">{textJsx}</div>
+          <div className="hidden sm:flex max-w-[50%] w-2/4 mx-5">{textJsx}</div>
         </div>
         <div className="hidden sm:flex flex-row-reverse w-4/5">
           <button

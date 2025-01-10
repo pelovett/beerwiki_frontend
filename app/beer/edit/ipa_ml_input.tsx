@@ -1,5 +1,4 @@
 import { ReactEventHandler, forwardRef } from "react";
-import { MutableRefObject } from "react";
 
 type IpaMlInputProps = {
   inputText: string;
@@ -11,7 +10,14 @@ type IpaMlInputProps = {
 export const IpaMlInput = forwardRef<HTMLTextAreaElement, IpaMlInputProps>(
   ({ inputText, setInputText, disabled, onSelect }, ref) => {
     const handleInputChange = (event: { target: { value: string } }) => {
+      console.log("Testing handle input change");
       setInputText(event.target.value);
+      console.log("Drapping event");
+      console.log(event.target);
+      if (ref) {
+        console.log("About to log the ref");
+        console.log(ref);
+      }
     };
 
     return (
