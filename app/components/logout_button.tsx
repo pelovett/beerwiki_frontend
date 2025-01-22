@@ -2,29 +2,11 @@
 
 "use client"; // Mark this component as a client-side component
 
-import { useState } from "react";
-import { NEXT_PUBLIC_BACKEND_SERVER } from "@/app/utils/network/util";
-
 const LogoutButton = () => {
-  const handleLogout = async () => {
-    try {
-      const response = await fetch(
-        NEXT_PUBLIC_BACKEND_SERVER + "/user/logout-user",
-        {
-          method: "GET", // Assuming the logout endpoint uses GET, or use POST if needed
-          credentials: "include", // Ensure the cookie is sent with the request
-        }
-      );
-
-      if (response.ok) {
-        // Redirect to the login page after successful logout
-        window.location.href = "/"; // Redirect to login page
-      } else {
-      }
-    } catch (error) {
-      console.error("Logout failed:", error);
-    } finally {
-    }
+  const handleLogout = () => {
+    window.document.cookie =
+      "login_cookie=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;";
+    window.location.href = "/user/login";
   };
 
   return (

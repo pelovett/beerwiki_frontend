@@ -1,11 +1,16 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 import Sidebar from "@/app/components/side_bar";
-import { VerifyUserClient } from "@/app/utils/network/verify_user_server";
+import { VerifyUserClient } from "@/app/utils/network/verify_user_client";
 import LogoutButton from "@/app/components/logout_button";
 
-export default async function Home() {
-  const userVerified = await VerifyUserClient(); // Fetch user verification status
+export default function Home() {
+  const [userVerified, setUserVerified] = useState(false);
+  useEffect(() => {
+    setUserVerified(VerifyUserClient(window));
+  }, []);
 
   return (
     <div className="relative min-h-screen flex items-center justify-center">

@@ -1,45 +1,67 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { NEXT_PUBLIC_BACKEND_SERVER } from "@/app/utils/network/util";
 import Sidebar from "@/app/components/side_bar";
 import TopBar from "@/app/components/top_bar";
+import { VerifyUserClient } from "@/app/utils/network/verify_user_client";
 
 export default function LoginPage() {
   const router = useRouter();
   const [popupVisible, setPopupVisible] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  // Check if we're already logged in
+  useEffect(() => {
+    if (VerifyUserClient(window)) {
+      window.location.href = "/user/profile";
+    }
+  });
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
     const email = formData.get("email");
     const password = formData.get("password");
 
-    const response = await fetch(NEXT_PUBLIC_BACKEND_SERVER + "/user/login", {
+    fetch(NEXT_PUBLIC_BACKEND_SERVER + "/user/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
       credentials: "include", // Important for including cookies
-    });
+    })
+      .catch((err) => {
+        console.log(err);
+        setPopupMessage(`Error: Could Not Contact Server`); // Set the message to display the error
+        setPopupVisible(true);
+      })
+      .then((response) => {
+        if (response?.ok) {
+          setTimeout(() => {
+            router.push("/user/profile");
+          }, 200);
+        } else {
+          console.error(response);
+          if (response) {
+            response
+              .json()
+              .then((errorResponse) => {
+                console.log("Error Response:", errorResponse); // Log the entire error response for debugging
 
-    if (response.ok) {
-      console.log("good");
-      // Redirect the user to another page after successful confirmation
-      setTimeout(() => {
-        router.push("/user/profile");
-      }, 500); // Redirect after 2 seconds
-    } else {
-      console.error(response);
-      const errorResponse = await response.json(); // Parse the error response as JSON
-      console.log("Error Response:", errorResponse); // Log the entire error response for debugging
-
-      // Access the error message and set it for the popup
-      setPopupMessage(`Error: ${errorResponse.error}`); // Set the message to display the error
-      setPopupVisible(true);
-    }
+                // Access the error message and set it for the popup
+                setPopupMessage(`Error: ${errorResponse.error}`); // Set the message to display the error
+                setPopupVisible(true);
+              })
+              .catch((err) => {
+                console.log(err);
+                setPopupMessage(`Error: Internal Server Error`); // Set the message to display the error
+                setPopupVisible(true);
+              });
+          }
+        }
+      });
   }
 
   function closePopup() {

@@ -20,7 +20,9 @@ export default async function Page(): Promise<JSX.Element> {
 
   // Check if we're auth'd
   useEffect(() => {
-    VerifyUserClient(window.document);
+    if (!VerifyUserClient(window)) {
+      window.location.href = "/user/login";
+    }
   }, []);
 
   async function saveBeer() {
